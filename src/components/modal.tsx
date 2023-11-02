@@ -23,7 +23,7 @@ export default function Modal({
       id="wrapper"
       onClick={handleClose}
     >
-      <div className="w-[600px] bg-white items-start p-5 border-b rounded-t dark:border-gray-600">
+      <div className="w-[600px] bg-white items-start p-5 border-b rounded dark:border-gray-600">
         <div className="flex justify-between">
           <h3 className="text-gray-900 text-xl lg:text-2xl font-semibold dark:text-white">
             {title}
