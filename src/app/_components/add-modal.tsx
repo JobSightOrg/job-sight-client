@@ -1,6 +1,6 @@
 import Modal from "@/components/modal";
 import { Props } from "@/components/modal";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 enum Company {
   Google = "Google",
@@ -10,7 +10,29 @@ enum Company {
 }
 
 export default function AddModal({ isVisible, onClose }: Props): JSX.Element {
-  const [toggleDropdown, setToggleDropdown] = useState(false);
+  const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
+  const [selectedCompany, setSelectedCompany] = useState<string>("Company");
+  const [urlInput, setUrlInput] = useState<string>("");
+
+  const resetState = (): void => {
+    setToggleDropdown(false);
+    setSelectedCompany("Company");
+  };
+
+  const postAddJob = () => {
+    fetch("/api/listing", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({ companyName: selectedCompany, url: urlInput }),
+    })
+      .then(() => onClose())
+      .catch((err) => console.error(err));
+  };
+
+  useEffect(() => resetState(), [onClose]);
 
   return (
     <Modal isVisible={isVisible} title={"Add Job Listing"} onClose={onClose}>
@@ -25,7 +47,7 @@ export default function AddModal({ isVisible, onClose }: Props): JSX.Element {
               aria-haspopup="true"
               onClick={() => setToggleDropdown(!toggleDropdown)}
             >
-              Company
+              {selectedCompany}
               <svg
                 className="-mr-1 h-5 w-5 text-gray-400"
                 viewBox="0 0 20 20"
@@ -49,15 +71,23 @@ export default function AddModal({ isVisible, onClose }: Props): JSX.Element {
               tabIndex={-1}
             >
               {(Object.keys(Company) as Array<keyof typeof Company>).map(
-                (key, idx) => (
-                  <div className="py-1" role="none" key={idx}>
+                (company, idx) => (
+                  <div
+                    className="py-1"
+                    role="none"
+                    key={idx}
+                    onClick={() => {
+                      setSelectedCompany(company);
+                      setToggleDropdown(false);
+                    }}
+                  >
                     <button
                       className="text-gray-700 block px-4 py-2 text-sm"
                       role="menuitem"
                       tabIndex={-1}
                       id="menu-item-0"
                     >
-                      {key}
+                      {company}
                     </button>
                   </div>
                 )
@@ -88,8 +118,15 @@ export default function AddModal({ isVisible, onClose }: Props): JSX.Element {
             id="link"
             className="pr-24 text-gray-600 bg-gray-100 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-12 text-sm border-gray-300 rounded border"
             placeholder="https://google.com"
+            value={urlInput}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
+              setUrlInput((e.target as HTMLInputElement)?.value)
+            }
           />
-          <button className="focus:ring-2 focus:ring-offset-2 rounded-md focus:ring-indigo-600 absolute right-0 top-0 transition duration-150 ease-in-out hover:bg-indigo-600 focus:outline-none bg-indigo-700 rounded-r text-white px-5 h-10 text-sm">
+          <button
+            className="focus:ring-2 focus:ring-offset-2 rounded-md focus:ring-indigo-600 absolute right-0 top-0 transition duration-150 ease-in-out hover:bg-indigo-600 focus:outline-none bg-indigo-700 rounded-r text-white px-5 h-10 text-sm"
+            onClick={() => postAddJob()}
+          >
             Submit
           </button>
         </div>
