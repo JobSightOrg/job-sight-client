@@ -1,6 +1,7 @@
 import Modal from "@/components/modal";
 import { Props } from "@/components/modal";
 import React, { useEffect, useState } from "react";
+import { JobListings } from "../page";
 
 enum Company {
   Google = "Google",
@@ -9,7 +10,15 @@ enum Company {
   Apple = "Apple",
 }
 
-export default function AddModal({ isVisible, onClose }: Props): JSX.Element {
+type AddModalProps = Props & {
+  loadJobListings: () => Promise<void>;
+};
+
+export default function AddModal({
+  isVisible,
+  loadJobListings,
+  onClose,
+}: AddModalProps): JSX.Element {
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
   const [selectedCompany, setSelectedCompany] = useState<string>("Company");
   const [urlInput, setUrlInput] = useState<string>("");
@@ -19,16 +28,21 @@ export default function AddModal({ isVisible, onClose }: Props): JSX.Element {
     setSelectedCompany("Company");
   };
 
-  const postAddJob = () => {
+  const postAddJob = (): void => {
+    const data = { companyName: selectedCompany, url: urlInput };
+
     fetch("/api/listing", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify({ companyName: selectedCompany, url: urlInput }),
+      body: JSON.stringify(data),
     })
-      .then(() => onClose())
+      .then(async () => {
+        await loadJobListings();
+        onClose();
+      })
       .catch((err) => console.error(err));
   };
 

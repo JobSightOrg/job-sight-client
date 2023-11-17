@@ -1,31 +1,16 @@
-import { useEffect, useState } from "react";
+import { JobListings } from "../page";
 
-interface JobListings {
-  id: number;
-  url: string;
-  companyName: string;
-  createdAt: Date;
-  updatedAt?: Date;
-}
+type Props = {
+  jobListings: JobListings[];
+};
 
-export default function JobPost(): JSX.Element {
-  const [jobListings, setJobListings] = useState<JobListings[]>([]);
-
-  useEffect(() => {
-    fetch("/api/listing", {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => setJobListings(data))
-      .catch((err) => console.error(err));
-  }, []);
-
+export default function JobPost({ jobListings }: Props): JSX.Element {
   return (
     <div className="mt-5">
       {jobListings.map((jobListing) => (
         <div
           key={jobListing.id}
-          className="select-none cursor-pointer border-2 border-black rounded-md flex flex-1 items-center p-4 hover:shadow"
+          className="select-none cursor-pointer border-2 border-black rounded-md flex flex-1 items-center p-4 hover:shadow mb-4"
         >
           <div className="flex-1 pl-1 mr-16">
             <div className="font-medium">{jobListing.companyName}</div>

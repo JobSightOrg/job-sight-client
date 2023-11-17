@@ -1,7 +1,9 @@
+import React from "react";
+
 export type Props = {
   isVisible: boolean;
   title?: string;
-  children?: JSX.Element;
+  children?: React.ReactNode;
   onClose: () => void;
 };
 
