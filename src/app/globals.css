@@ -18,4 +18,5 @@
 
 body {
   color: rgb(var(--foreground-rgb));
+  font-family: Sans, Helvetica Neue, Helvetica, Arial, sans-serif;
 }

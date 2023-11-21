@@ -1,8 +1,10 @@
-type Props = {
+type JobSearchProps = {
   openAddModal: () => void;
 };
 
-export default function JobSearch({ openAddModal }: Props): JSX.Element {
+export default function JobSearch({
+  openAddModal,
+}: JobSearchProps): JSX.Element {
   return (
     <div className="flex">
       <form className="w-4/6">

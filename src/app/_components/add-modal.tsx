@@ -1,7 +1,6 @@
 import Modal from "@/components/modal";
 import { Props } from "@/components/modal";
 import React, { useEffect, useState } from "react";
-import { JobListings } from "../page";
 
 enum Company {
   Google = "Google",
