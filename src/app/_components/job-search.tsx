@@ -49,26 +49,27 @@ export default function JobSearch({
       </form>
       <a
         href="#_"
-        className="w-1/6 ml-2 inline-flex overflow-hidden text-white bg-gray-900 rounded group font-bold"
+        className="w-1/6 ml-2 inline-flex overflow-hidden text-white bg-blue-500 rounded group font-bold"
         onClick={openAddModal}
       >
         <span className="px-3.5 py-2 text-white bg-green-500 group-hover:bg-green-600 flex items-center justify-center">
           <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            stroke="currentColor"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-            ></path>
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
         </span>
-        <span className="m-auto">Add Listing</span>
+        <span className="m-auto">Post a job</span>
       </a>
       <button className="w-1/6 ml-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center justify-center">
         <span className="mr-2">Download</span>

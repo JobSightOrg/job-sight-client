@@ -30,7 +30,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="items-center justify-between pt-10 px-[20rem]">
+    <main className="items-center justify-between pt-10 px-[25rem]">
       <JobSearch openAddModal={() => setShowAddModal(true)} />
       <JobPost jobListings={jobListings} />
       <AddModal
