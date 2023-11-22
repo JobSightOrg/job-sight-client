@@ -25,9 +25,9 @@ export default function Modal({
       id="wrapper"
       onClick={handleClose}
     >
-      <div className="w-[600px] bg-white items-start p-5 border-b rounded dark:border-gray-600">
-        <div className="flex justify-between">
-          <h3 className="text-gray-900 text-xl lg:text-2xl font-semibold dark:text-white">
+      <div className="w-[500px] bg-white items-start border-b rounded dark:border-gray-600">
+        <div className="h-[60px] flex justify-between items-center px-4 border-b-2 border-black">
+          <h3 className="text-gray-900 text-xl lg:text-2xl font-bold dark:text-white">
             {title}
           </h3>
           <button

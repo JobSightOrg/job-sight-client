@@ -63,7 +63,7 @@ export default function JobPost({ jobListings }: JobPostProps): JSX.Element {
                 <p className="text-base ml-1">Long Beach, CA</p>
               </div>
             </div>
-            <div className="flex w-3/6 justify-end items-center">
+            <div className="flex w-3/6 justify-end items-center pt-1">
               <button className="bg-white text-green-500 border-2 border-green-500 font-bold rounded h-12 mr-8">
                 <span className="px-4">Open</span>
               </button>

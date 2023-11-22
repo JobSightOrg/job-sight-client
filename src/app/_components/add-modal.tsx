@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Modal from "@/components/modal";
 import { Props } from "@/components/modal";
 import React, { useEffect, useState } from "react";
@@ -19,12 +20,13 @@ export default function AddModal({
   onClose,
 }: AddModalProps): JSX.Element {
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
-  const [selectedCompany, setSelectedCompany] = useState<string>("Company");
+  const [selectedCompany, setSelectedCompany] =
+    useState<string>("Select Company");
   const [urlInput, setUrlInput] = useState<string>("");
 
   const resetState = (): void => {
     setToggleDropdown(false);
-    setSelectedCompany("Company");
+    setSelectedCompany("Select Company");
   };
 
   const postAddJob = (): void => {
@@ -49,18 +51,25 @@ export default function AddModal({
 
   return (
     <Modal isVisible={isVisible} title={"Add Job Listing"} onClose={onClose}>
-      <div className="flex items-stretch mt-2">
-        <div className="relative inline-block text-left">
-          <div>
+      <div className="flex-col items-stretch p-4">
+        <div className="flex mb-4">
+          <Image
+            className="rounded-md w-1/3"
+            src="https://source.unsplash.com/blue-and-white-letter-b-9Zjd7PE_FRM"
+            width={100}
+            height={100}
+            alt=""
+          />
+          <div className="w-2/3 pl-4 flex-col">
             <button
               type="button"
-              className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              className="inline-flex w-full justify-between gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
               id="menu-button"
               aria-expanded="true"
               aria-haspopup="true"
               onClick={() => setToggleDropdown(!toggleDropdown)}
             >
-              {selectedCompany}
+              <p>{selectedCompany}</p>
               <svg
                 className="-mr-1 h-5 w-5 text-gray-400"
                 viewBox="0 0 20 20"
@@ -74,39 +83,39 @@ export default function AddModal({
                 />
               </svg>
             </button>
-          </div>
-          {toggleDropdown && (
-            <div
-              className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="menu-button"
-              tabIndex={-1}
-            >
-              {(Object.keys(Company) as Array<keyof typeof Company>).map(
-                (company, idx) => (
-                  <div
-                    className="py-1"
-                    role="none"
-                    key={idx}
-                    onClick={() => {
-                      setSelectedCompany(company);
-                      setToggleDropdown(false);
-                    }}
-                  >
-                    <button
-                      className="text-gray-700 block px-4 py-2 text-sm"
-                      role="menuitem"
-                      tabIndex={-1}
-                      id="menu-item-0"
+            {toggleDropdown && (
+              <div
+                className="absolute z-10 mt-2 w-60 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="menu-button"
+                tabIndex={-1}
+              >
+                {(Object.keys(Company) as Array<keyof typeof Company>).map(
+                  (company, idx) => (
+                    <div
+                      className="py-1"
+                      role="none"
+                      key={idx}
+                      onClick={() => {
+                        setSelectedCompany(company);
+                        setToggleDropdown(false);
+                      }}
                     >
-                      {company}
-                    </button>
-                  </div>
-                )
-              )}
-            </div>
-          )}
+                      <button
+                        className="text-gray-700 block px-4 py-2 text-sm"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-0"
+                      >
+                        {company}
+                      </button>
+                    </div>
+                  )
+                )}
+              </div>
+            )}
+          </div>
         </div>
         <div className="relative w-full">
           <div className="absolute text-gray-500 flex items-center px-2 border-r h-full">
