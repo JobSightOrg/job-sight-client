@@ -1,11 +1,33 @@
 import Image from "next/image";
 import { JobListings } from "../page";
+import { svgFiles } from "@/lib/svg-loader";
 
 type JobPostProps = {
   jobListings: JobListings[];
+  loadJobListings: () => Promise<void>;
 };
 
-export default function JobPost({ jobListings }: JobPostProps): JSX.Element {
+export default function JobPost({
+  jobListings,
+  loadJobListings,
+}: JobPostProps): JSX.Element {
+  const deleteJobListing = (id: number): void => {
+    const data = { id };
+
+    fetch("/api/listing", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+      body: JSON.stringify(data),
+    })
+      .then(async () => {
+        await loadJobListings();
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <div className="mt-5 justify-center items-center">
       {jobListings.map((jobListing) => (
@@ -14,13 +36,22 @@ export default function JobPost({ jobListings }: JobPostProps): JSX.Element {
           className="w-[700px] mx-auto select-none cursor-pointer flex-col border-2 border-black rounded-md hover:shadow mb-4 shadow-md"
         >
           <div className="flex px-1 pt-1">
-            <Image
-              className="rounded-md w-1/6"
-              src="https://source.unsplash.com/blue-and-white-letter-b-9Zjd7PE_FRM"
-              width={100}
-              height={100}
-              alt=""
-            />
+            {svgFiles[jobListing.companyName] ? (
+              <div className="m-auto">
+                {svgFiles[jobListing.companyName]({
+                  width: 100,
+                  height: 100,
+                })}
+              </div>
+            ) : (
+              <Image
+                className="rounded-md w-1/6 m-auto"
+                src="https://source.unsplash.com/blue-and-white-letter-b-9Zjd7PE_FRM"
+                width={100}
+                height={100}
+                alt=""
+              />
+            )}
             <div className="ml-2 w-2/6">
               <p className="text-xl font-bold">Full Stack Developer</p>
               <div className="flex items-center">
@@ -29,7 +60,7 @@ export default function JobPost({ jobListings }: JobPostProps): JSX.Element {
                   width="22"
                   height="22"
                   viewBox="0 0 24 24"
-                  stroke-width="2"
+                  strokeWidth="2"
                   stroke="currentColor"
                   fill="none"
                   strokeLinecap="round"
@@ -73,7 +104,7 @@ export default function JobPost({ jobListings }: JobPostProps): JSX.Element {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-9 h-9 mr-1"
+                className="w-9 h-9 mr-1 hover:text-yellow-500"
               >
                 <path
                   strokeLinecap="round"
@@ -87,7 +118,8 @@ export default function JobPost({ jobListings }: JobPostProps): JSX.Element {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-9 h-9 mr-1"
+                className="w-9 h-9 mr-1 hover:text-red-500"
+                onClick={() => deleteJobListing(jobListing.id)}
               >
                 <path
                   strokeLinecap="round"

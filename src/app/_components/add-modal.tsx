@@ -1,13 +1,15 @@
 import Image from "next/image";
 import Modal from "@/components/modal";
 import { Props } from "@/components/modal";
+import { svgFiles } from "@/lib/svg-loader";
 import React, { useEffect, useState } from "react";
 
 enum Company {
   Google = "Google",
-  Meta = "Meta",
+  Facebook = "Facebook",
   Amazon = "Amazon",
   Apple = "Apple",
+  Microsoft = "Microsoft",
 }
 
 type AddModalProps = Props & {
@@ -27,9 +29,10 @@ export default function AddModal({
   const resetState = (): void => {
     setToggleDropdown(false);
     setSelectedCompany("Select Company");
+    setUrlInput("");
   };
 
-  const postAddJob = (): void => {
+  const postJobListing = (): void => {
     const data = { companyName: selectedCompany, url: urlInput };
 
     fetch("/api/listing", {
@@ -53,13 +56,24 @@ export default function AddModal({
     <Modal isVisible={isVisible} title={"Add Job Listing"} onClose={onClose}>
       <div className="flex-col items-stretch p-4">
         <div className="flex mb-4">
-          <Image
-            className="rounded-md w-1/3"
-            src="https://source.unsplash.com/blue-and-white-letter-b-9Zjd7PE_FRM"
-            width={100}
-            height={100}
-            alt=""
-          />
+          {svgFiles[selectedCompany] ? (
+            <div className="m-auto">
+              {svgFiles[selectedCompany]({
+                width: 150,
+                height: 150,
+              })}
+            </div>
+          ) : (
+            <Image
+              className="rounded-md w-1/3 m-auto"
+              src={
+                "https://source.unsplash.com/blue-and-white-letter-b-9Zjd7PE_FRM"
+              }
+              width={100}
+              height={100}
+              alt=""
+            />
+          )}
           <div className="w-2/3 pl-4 flex-col">
             <button
               type="button"
@@ -144,10 +158,11 @@ export default function AddModal({
             onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
               setUrlInput((e.target as HTMLInputElement)?.value)
             }
+            required
           />
           <button
             className="focus:ring-2 focus:ring-offset-2 rounded-md focus:ring-indigo-600 absolute right-0 top-0 transition duration-150 ease-in-out hover:bg-indigo-600 focus:outline-none bg-indigo-700 rounded-r text-white px-5 h-10 text-sm"
-            onClick={() => postAddJob()}
+            onClick={() => postJobListing()}
           >
             Submit
           </button>

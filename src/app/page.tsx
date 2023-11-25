@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import JobSearch from "./_components/job-search";
 import JobPost from "./_components/job-post";
 import AddModal from "./_components/add-modal";
 
 export interface JobListings {
-  id?: number;
+  id: number;
   url: string;
   companyName: string;
   createdAt?: Date;
@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <main className="items-center justify-between pt-10 px-[25rem]">
       <JobSearch openAddModal={() => setShowAddModal(true)} />
-      <JobPost jobListings={jobListings} />
+      <JobPost jobListings={jobListings} loadJobListings={loadJobListings} />
       <AddModal
         isVisible={showAddModal}
         loadJobListings={loadJobListings}
