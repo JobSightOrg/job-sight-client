@@ -39,8 +39,8 @@ export default function JobPost({
             {svgFiles[jobListing.companyName] ? (
               <div className="m-auto">
                 {svgFiles[jobListing.companyName]({
-                  width: 100,
-                  height: 100,
+                  width: 80,
+                  height: 80,
                 })}
               </div>
             ) : (
