@@ -9,6 +9,13 @@ export const options: NextAuthOptions = {
     url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
     secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
   }),
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log(user, account, profile, email, credentials);
+      // Redirect to the home page after a successful sign-in
+      return "/"; // You can replace '/' with your desired URL
+    },
+  },
   providers: [
     CredentialsProvider({
       name: "Credentials",
