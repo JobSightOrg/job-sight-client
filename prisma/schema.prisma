@@ -9,7 +9,7 @@ datasource db {
   schemas  = ["next_auth", "public"]
 }
 
-model JobListing {
+model job_listing {
   id          Int      @id @default(autoincrement())
   url         String
   createdAt   DateTime @default(now())
@@ -51,13 +51,14 @@ model sessions {
 }
 
 model users {
-  id            String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name          String?
-  email         String?    @unique(map: "email_unique")
-  emailVerified DateTime?  @db.Timestamptz(6)
-  image         String?
-  accounts      accounts[]
-  sessions      sessions[]
+  id             String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name           String?
+  email          String?    @unique(map: "email_unique")
+  emailVerified  DateTime?  @db.Timestamptz(6)
+  image          String?
+  hashedPassword String?
+  accounts       accounts[]
+  sessions       sessions[]
 
   @@schema("next_auth")
 }

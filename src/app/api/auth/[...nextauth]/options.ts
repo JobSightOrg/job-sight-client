@@ -12,8 +12,8 @@ export const options: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       console.log(user, account, profile, email, credentials);
-      // Redirect to the home page after a successful sign-in
-      return "/"; // You can replace '/' with your desired URL
+
+      return "/";
     },
   },
   providers: [
@@ -29,18 +29,23 @@ export const options: NextAuthOptions = {
           type: "password",
         },
       },
-      async authorize(credentials, _req) {
-        const res = await fetch("/your/endpoint", {
-          method: "POST",
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" },
-        });
-        const user = await res.json();
+      async authorize(credentials) {
+        try {
+          console.log("credentials", credentials);
+          const res = await fetch("/api/register", {
+            method: "POST",
+            body: JSON.stringify(credentials),
+            headers: { "Content-Type": "application/json" },
+          });
+          const user = await res.json();
 
-        if (res.ok && user) {
-          return user;
+          if (res.ok && user) {
+            return user;
+          }
+          return null;
+        } catch (err) {
+          console.error(err);
         }
-        return null;
       },
     }),
     GoogleProvider({

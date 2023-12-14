@@ -26,7 +26,7 @@ const isValidBody = (body: any, requestType: string): body is RequestBody => {
 
 export async function GET() {
   try {
-    const jobListings = await prisma.jobListing?.findMany();
+    const jobListings = await prisma.job_listing?.findMany();
     return NextResponse.json(jobListings ?? []);
   } catch (err) {
     console.error("Failed GET /api/listing\n", err);
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
 
     if (!isValidBody(body, "post")) throw new CustomError("Invalid Body", 400);
 
-    await prisma.jobListing?.create({ data: body });
+    await prisma.job_listing?.create({ data: body });
     return NextResponse.json({ status: 200 });
   } catch (err) {
     console.error("Failed POST /api/listing\n", err);
@@ -57,7 +57,7 @@ export async function DELETE(req: NextRequest) {
     if (!isValidBody(body, "delete"))
       throw new CustomError("Invalid Body", 400);
 
-    await prisma.jobListing?.delete({ where: body });
+    await prisma.job_listing?.delete({ where: body });
     return NextResponse.json({ status: 200 });
   } catch (err) {
     console.error("Failed DELETE /api/listing\n", err);
