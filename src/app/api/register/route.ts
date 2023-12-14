@@ -3,24 +3,36 @@ import bcrypt from "bcrypt";
 import prisma from "@/db/prisma";
 
 interface RequestBody {
-  email: String;
-  password: String;
+  name: string;
+  email: string;
+  password: string;
 }
 
 export async function POST(req: NextRequest) {
   try {
     const body: RequestBody = await req.json();
-    const { email, password } = body;
-    console.log(body);
+    const { name, email, password } = body;
 
-    if (!email || !password)
-      return new NextResponse("Incorrect email or password", { status: 400 });
-
-    const userExist = prisma.accounts.findUnique({
+    const userExist = await prisma.users.findUnique({
       where: {
         email,
       },
     });
+
+    if (userExist)
+      return new NextResponse("User already exists", { status: 400 });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await prisma.users.create({
+      data: {
+        name,
+        email,
+        hashedPassword,
+      },
+    });
+
+    console.log(user);
+    return NextResponse.json(user);
   } catch (err) {
     console.error(err);
   }
