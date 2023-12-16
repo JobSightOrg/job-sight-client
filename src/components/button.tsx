@@ -3,6 +3,7 @@ export interface IButtonProps
   className?: string;
   children?: React.ReactNode;
   variant?:
+    | "none"
     | "primary"
     | "danger"
     | "success"
@@ -28,8 +29,10 @@ const Button = ({
 }: IButtonProps) => {
   const getVariant = () => {
     switch (variant) {
+      case "none":
+        return "text-black";
       case "primary":
-        return "bg-violet-500 hover:bg-violet-700 text-white";
+        return "bg-customLogoColor-500 text-white";
       case "danger":
         return "bg-red-500 hover:bg-red-700 text-white";
       case "success":
@@ -45,13 +48,13 @@ const Button = ({
       case "outline-warning":
         return "bg-white text-amber-400 border border-amber-500 hover:text-white hover:bg-amber-500";
       case "outline-primary":
-        return "bg-white text-violet-500 border border-violet-500 hover:text-white hover:bg-violet-700";
+        return "bg-white text-black border border-customLogoColor-500 hover:text-white hover:bg-customLogoColor-100";
       case "github":
         return "bg-black text-white border border-black-500 hover:bg-gray-700";
       case "google":
         return "bg-white text-black border border-black hover:bg-gray-200";
       default:
-        return "bg-violet-500 hover:bg-violet-700 hover:bg-gray text-white shadow shadow-violet-600/25 hover:shadow-violet-600/75";
+        return "bg-customLogoColor-500 hover:bg-customLogoColor-800 text-white shadow shadow-violet-600/25 hover:shadow-violet-600/75";
     }
   };
 
@@ -59,9 +62,9 @@ const Button = ({
     <button
       {...props}
       type={type}
-      className={`${getVariant()}  transition duration-500  ${
+      className={`${getVariant()}  transition duration-300  ${
         !paddingLess && "py-2 px-4"
-      }  ${!square && "rounded-md"} active:scale-95 ${className}`}
+      }  ${!square && "rounded-lg"} active:scale-95 ${className}`}
     >
       {children}
     </button>

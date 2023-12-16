@@ -17,20 +17,18 @@ const TextBox = React.forwardRef<HTMLInputElement, IProps>(
           {labelText}
         </label>
       )}
-      <div className="flex items-stretch">
+      <div className="relative items-stretch">
         <input
-          id="txt"
           autoComplete="off"
-          className={`border border-slate-400 disabled:border-slate-100 w-full block outline-none py-2 px-2 transition-all text-xs lg:text-sm xl:text-base  bg-slate-50 focus:shadow focus:shadow-blue-500
-              ${error && "border-red-500 border  animate-shake"} ${
-            children ? "rounded-r-md" : "rounded-md"
+          className={`rounded-lg border border-gray-400 disabled:border-gray-100 w-full block outline-none py-2 px-2 transition-all text-xs lg:text-sm xl:text-base  bg-gray-50 focus:shadow focus:shadow-customLogoColor-500
+              ${error && "border-red-500 border animate-shake"} ${
+            children && "pl-10"
           }`}
           {...props}
           ref={ref}
           type={type}
-        ></input>
-
-        <div className="flex">{children}</div>
+        />
+        {children}
       </div>
       {error && (
         <p className="text-red-600 text-right animate-shake">{error}</p>
