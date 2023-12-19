@@ -3,7 +3,7 @@
 import TextBox from "@/components/textbox";
 import Button from "@/components/button";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import Logo from "@/../public/logo.png";
 import NameIcon from "@/../public/assets/icons/name.svg";
@@ -11,43 +11,85 @@ import EmailIcon from "@/../public/assets/icons/email.svg";
 import PasswordIcon from "@/../public/assets/icons/password.svg";
 import ErrorIcon from "@/../public/assets/icons/error.svg";
 
+interface ErrorMsgObj {
+  name?: string;
+  email?: string;
+  password?: string;
+  verifyPassword?: string;
+}
+
 export default function SignIn() {
   const [isLogin, setLogin] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorMsgObj | null>(null);
+  const [apiErrorMsg, setApiErrorMsg] = useState<string | null>(null);
   const name = useRef<string>("");
   const email = useRef<string>("");
   const password = useRef<string>("");
+  const verifyPassword = useRef<string>("");
 
   const signUp = (): void => {
+    if (!verifyForm()) return;
+
     const data = {
       name: name.current,
       email: email.current,
       password: password.current,
     };
 
-    fetch("/api/register", {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json, text/plain",
-      },
-      method: "POST",
-      body: JSON.stringify(data),
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          const errMessage: string = await res.text();
+    // fetch("/api/register", {
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json, text/plain",
+    //   },
+    //   method: "POST",
+    //   body: JSON.stringify(data),
+    // })
+    //   .then(async (res) => {
+    //     if (!res.ok) {
+    //       const errMessage: string = await res.text();
 
-          if (errMessage) throw new Error(errMessage);
-          throw new Error(`Error status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => console.log(data))
-      .catch((err: Error) => {
-        console.error(err.message);
-        setError(err.message);
-      });
+    //       if (errMessage) throw new Error(errMessage);
+    //       throw new Error(`Error status: ${res.status}`);
+    //     }
+    //     return res.json();
+    //   })
+    //   .then((data) => console.log(data))
+    //   .catch((err: Error) => {
+    //     console.error(err.message);
+    //     setApiErrorMsg(err.message);
+    //   });
   };
+
+  const resetState = () => {
+    [name.current, email.current, password.current, verifyPassword.current] = [
+      "",
+      "",
+      "",
+      "",
+    ];
+    setError(null);
+    setApiErrorMsg(null);
+  };
+
+  const verifyForm = (): boolean => {
+    let currError: ErrorMsgObj = {};
+
+    if (!name.current) currError.name = "Name is required";
+    if (!email.current) currError.email = "Email is required";
+    if (password.current.length < 6)
+      currError.password = "Password length must be at least 6 characters";
+    if (password.current !== verifyPassword.current)
+      currError.verifyPassword = "Passwords do not match";
+
+    setError(currError);
+    console.log(name, email);
+
+    return Object.keys(currError).length === 4;
+  };
+
+  useEffect(() => {
+    resetState();
+  }, [isLogin]);
 
   return (
     <div className="w-full flex justify-center items-center h-screen bg-gradient-to-br">
@@ -77,12 +119,12 @@ export default function SignIn() {
             Register
           </Button>
         </div>
-        {error && (
+        {apiErrorMsg && (
           <>
             <ErrorIcon className="h-7 w-7 m-auto" />
             <div className="w-full items-center text-center border text-customLogoColor-500 border-customLogoColor-100 bg-red-100 rounded-lg mb-3 p-2">
               <div className="break-words">
-                <p className="text-sm">{error}</p>
+                <p className="text-sm">{apiErrorMsg}</p>
               </div>
             </div>
           </>
@@ -91,6 +133,7 @@ export default function SignIn() {
           <TextBox
             className="mb-3"
             placeholder="Full Name"
+            error={error?.name}
             onChange={(e) => (name.current = e.target.value)}
           >
             <NameIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
@@ -99,6 +142,7 @@ export default function SignIn() {
         <TextBox
           className="mb-3"
           placeholder="E-mail"
+          error={error?.email}
           onChange={(e) => (email.current = e.target.value)}
         >
           <EmailIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
@@ -107,6 +151,7 @@ export default function SignIn() {
           className="mb-3"
           placeholder="Password (6 or more characters)"
           type={"password"}
+          error={error?.password}
           onChange={(e) => (password.current = e.target.value)}
         >
           <PasswordIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
@@ -116,7 +161,8 @@ export default function SignIn() {
             className="mb-3"
             placeholder="Verify Password"
             type={"password"}
-            onChange={(e) => (password.current = e.target.value)}
+            error={error?.verifyPassword}
+            onChange={(e) => (verifyPassword.current = e.target.value)}
           >
             <PasswordIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
           </TextBox>

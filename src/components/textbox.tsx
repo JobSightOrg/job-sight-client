@@ -2,7 +2,7 @@ import React from "react";
 
 interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText?: string;
-  error?: string;
+  error?: string | null;
   children?: React.ReactNode;
 }
 
@@ -20,7 +20,7 @@ const TextBox = React.forwardRef<HTMLInputElement, IProps>(
       <div className="relative items-stretch">
         <input
           autoComplete="off"
-          className={`rounded-lg border border-gray-400 disabled:border-gray-100 w-full block outline-none py-2 px-2 transition-all text-xs lg:text-sm xl:text-base  bg-gray-50 focus:shadow focus:shadow-customLogoColor-500
+          className={`rounded-lg border border-gray-400 disabled:border-gray-100 w-full block outline-none py-2 px-2 transition-all text-xs lg:text-sm xl:text-base  bg-gray-50 focus:shadow focus:shadow-green-500
               ${error && "border-red-500 border animate-shake"} ${
             children && "pl-10"
           }`}
@@ -31,7 +31,7 @@ const TextBox = React.forwardRef<HTMLInputElement, IProps>(
         {children}
       </div>
       {error && (
-        <p className="text-red-600 text-right animate-shake">{error}</p>
+        <p className="text-red-600 text-left animate-shake pl-2">{error}</p>
       )}
     </div>
   )
