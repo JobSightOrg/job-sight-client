@@ -18,10 +18,11 @@ interface ErrorMsgObj {
   verifyPassword?: string;
 }
 
-export default function SignIn() {
+export default function Login() {
   const [isLogin, setLogin] = useState<boolean>(true);
   const [error, setError] = useState<ErrorMsgObj | null>(null);
   const [apiErrorMsg, setApiErrorMsg] = useState<string | null>(null);
+  const isMounted = useRef(false);
   const name = useRef<string>("");
   const email = useRef<string>("");
   const password = useRef<string>("");
@@ -74,22 +75,44 @@ export default function SignIn() {
   const verifyForm = (): boolean => {
     let currError: ErrorMsgObj = {};
 
-    if (!name.current) currError.name = "Name is required";
     if (!email.current) currError.email = "Email is required";
     if (password.current.length < 6)
       currError.password = "Password length must be at least 6 characters";
-    if (password.current !== verifyPassword.current)
-      currError.verifyPassword = "Passwords do not match";
 
-    setError(currError);
-    console.log(name, email);
+    if (!isLogin) {
+      if (!name.current) currError.name = "Name is required";
+      if (password.current !== verifyPassword.current)
+        currError.verifyPassword = "Passwords do not match";
+    }
 
-    return Object.keys(currError).length === 4;
+    const isValid: boolean = Object.keys(currError).length === 0;
+
+    if (!isValid) setError(currError);
+
+    return isValid;
   };
 
   useEffect(() => {
-    resetState();
+    if (isMounted.current) {
+      localStorage.setItem("isLogin", isLogin.toString());
+      resetState();
+    }
   }, [isLogin]);
+
+  useEffect((): void => {
+    if (!isMounted.current) {
+      const localStorageLogin = localStorage.getItem("isLogin");
+
+      if (localStorageLogin) {
+        const parsedLocalStorageLogin = JSON.parse(localStorageLogin);
+
+        typeof parsedLocalStorageLogin === "boolean" &&
+          setLogin(parsedLocalStorageLogin);
+      }
+    }
+
+    isMounted.current = true;
+  }, []);
 
   return (
     <div className="w-full flex justify-center items-center h-screen bg-gradient-to-br">
@@ -171,13 +194,14 @@ export default function SignIn() {
           <>
             <Button
               className="mt-5"
-              onClick={() =>
-                signIn("credentials", {
-                  email: email.current,
-                  password: password.current,
-                  redirect: false,
-                })
-              }
+              onClick={() => {
+                if (verifyForm())
+                  signIn("credentials", {
+                    email: email.current,
+                    password: password.current,
+                    redirect: false,
+                  });
+              }}
             >
               Log In
             </Button>
