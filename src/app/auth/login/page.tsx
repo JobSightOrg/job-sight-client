@@ -19,22 +19,22 @@ interface ErrorMsgObj {
 }
 
 export default function Login() {
+  const isMounted = useRef(false);
   const [isLogin, setLogin] = useState<boolean>(true);
   const [error, setError] = useState<ErrorMsgObj | null>(null);
   const [apiErrorMsg, setApiErrorMsg] = useState<string | null>(null);
-  const isMounted = useRef(false);
-  const name = useRef<string>("");
-  const email = useRef<string>("");
-  const password = useRef<string>("");
-  const verifyPassword = useRef<string>("");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [verifyPassword, setVerifyPassword] = useState<string>("");
 
   const signUp = (): void => {
     if (!verifyForm()) return;
 
     const data = {
-      name: name.current,
-      email: email.current,
-      password: password.current,
+      name,
+      email,
+      password,
     };
 
     // fetch("/api/register", {
@@ -62,12 +62,10 @@ export default function Login() {
   };
 
   const resetState = () => {
-    [name.current, email.current, password.current, verifyPassword.current] = [
-      "",
-      "",
-      "",
-      "",
-    ];
+    setName("");
+    setEmail("");
+    setPassword("");
+    setVerifyPassword("");
     setError(null);
     setApiErrorMsg(null);
   };
@@ -75,13 +73,13 @@ export default function Login() {
   const verifyForm = (): boolean => {
     let currError: ErrorMsgObj = {};
 
-    if (!email.current) currError.email = "Email is required";
-    if (password.current.length < 6)
+    if (!email) currError.email = "Email is required";
+    if (password.length < 6)
       currError.password = "Password length must be at least 6 characters";
 
     if (!isLogin) {
-      if (!name.current) currError.name = "Name is required";
-      if (password.current !== verifyPassword.current)
+      if (!name) currError.name = "Name is required";
+      if (password !== verifyPassword)
         currError.verifyPassword = "Passwords do not match";
     }
 
@@ -90,6 +88,14 @@ export default function Login() {
     if (!isValid) setError(currError);
 
     return isValid;
+  };
+
+  const isValidEmail = (email: string): boolean => {
+    // Regular expression for a basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Test the email against the regex
+    return emailRegex.test(email);
   };
 
   useEffect(() => {
@@ -156,8 +162,9 @@ export default function Login() {
           <TextBox
             className="mb-3"
             placeholder="Full Name"
-            error={error?.name}
-            onChange={(e) => (name.current = e.target.value)}
+            error={name ? null : error?.name}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           >
             <NameIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
           </TextBox>
@@ -165,8 +172,9 @@ export default function Login() {
         <TextBox
           className="mb-3"
           placeholder="E-mail"
-          error={error?.email}
-          onChange={(e) => (email.current = e.target.value)}
+          error={email ? null : error?.email}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         >
           <EmailIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
         </TextBox>
@@ -174,8 +182,9 @@ export default function Login() {
           className="mb-3"
           placeholder="Password (6 or more characters)"
           type={"password"}
-          error={error?.password}
-          onChange={(e) => (password.current = e.target.value)}
+          error={password.length >= 6 ? null : error?.password}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         >
           <PasswordIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
         </TextBox>
@@ -184,8 +193,9 @@ export default function Login() {
             className="mb-3"
             placeholder="Verify Password"
             type={"password"}
-            error={error?.verifyPassword}
-            onChange={(e) => (verifyPassword.current = e.target.value)}
+            error={verifyPassword === password ? null : error?.verifyPassword}
+            value={verifyPassword}
+            onChange={(e) => setVerifyPassword(e.target.value)}
           >
             <PasswordIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5" />
           </TextBox>
@@ -197,8 +207,8 @@ export default function Login() {
               onClick={() => {
                 if (verifyForm())
                   signIn("credentials", {
-                    email: email.current,
-                    password: password.current,
+                    email,
+                    password,
                     redirect: false,
                   });
               }}
