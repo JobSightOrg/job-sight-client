@@ -3,6 +3,14 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import { SupabaseAdapter } from "@auth/supabase-adapter";
+import prisma from "@/db/prisma";
+import bcrypt from "bcrypt";
+import CustomError from "@/lib/custom-error";
+
+interface Credentials {
+  email: string;
+  password: string;
+}
 
 export const options: NextAuthOptions = {
   adapter: SupabaseAdapter({
@@ -11,18 +19,18 @@ export const options: NextAuthOptions = {
   }),
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log(user, account, profile, email, credentials);
-
+      console.log(user);
       return "/";
     },
   },
   providers: [
     CredentialsProvider({
+      id: "credentials",
       name: "Credentials",
       credentials: {
-        username: {
-          label: "Username",
-          type: "text",
+        email: {
+          label: "Email",
+          type: "email",
         },
         password: {
           label: "Password",
@@ -31,20 +39,38 @@ export const options: NextAuthOptions = {
       },
       async authorize(credentials) {
         try {
-          console.log("credentials", credentials);
-          const res = await fetch("/api/register", {
-            method: "POST",
-            body: JSON.stringify(credentials),
-            headers: { "Content-Type": "application/json" },
-          });
-          const user = await res.json();
+          const { email, password } = credentials as Credentials;
 
-          if (res.ok && user) {
-            return user;
-          }
-          return null;
+          if (!email || !password)
+            throw new CustomError("Email and password required", 401);
+
+          const user = await prisma.users.findUnique({
+            where: {
+              email: credentials?.email,
+            },
+          });
+
+          if (!user) throw new CustomError("Email does not exist", 401);
+
+          const passwordMatch = await bcrypt.compare(
+            password,
+            user.hashedPassword as string
+          );
+
+          console.log(passwordMatch);
+
+          if (!passwordMatch) throw new CustomError("Incorrect password", 401);
+
+          return user;
         } catch (err) {
+          if (err instanceof CustomError) throw new Error(err.message);
           console.error(err);
+          throw new Error(
+            JSON.stringify({
+              error: err,
+              status: false,
+            })
+          );
         }
       },
     }),
@@ -59,11 +85,9 @@ export const options: NextAuthOptions = {
   ],
   pages: {
     signIn: "/auth/login",
-    // signOut: "/auth/signout",
-    // error: "/auth/error", // Error code passed in query string as ?error=
     // verifyRequest: "/auth/verify-request", // (used for check email message)
-    // newUser: "/auth/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
   },
   // Other configuration options
   secret: process.env.NEXTAUTH_SECRET,
+  session: { strategy: "jwt" },
 };

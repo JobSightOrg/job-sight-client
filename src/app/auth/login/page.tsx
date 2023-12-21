@@ -37,28 +37,28 @@ export default function Login() {
       password,
     };
 
-    // fetch("/api/register", {
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json, text/plain",
-    //   },
-    //   method: "POST",
-    //   body: JSON.stringify(data),
-    // })
-    //   .then(async (res) => {
-    //     if (!res.ok) {
-    //       const errMessage: string = await res.text();
+    fetch("/api/register", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json, text/plain",
+      },
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const errMessage: string = await res.text();
 
-    //       if (errMessage) throw new Error(errMessage);
-    //       throw new Error(`Error status: ${res.status}`);
-    //     }
-    //     return res.json();
-    //   })
-    //   .then((data) => console.log(data))
-    //   .catch((err: Error) => {
-    //     console.error(err.message);
-    //     setApiErrorMsg(err.message);
-    //   });
+          if (errMessage) throw new Error(errMessage);
+          throw new Error(`Error status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => console.log(data))
+      .catch((err: Error) => {
+        console.error(err.message);
+        setApiErrorMsg(err.message);
+      });
   };
 
   const resetState = () => {
@@ -204,13 +204,17 @@ export default function Login() {
           <>
             <Button
               className="mt-5"
-              onClick={() => {
-                if (verifyForm())
-                  signIn("credentials", {
+              onClick={async () => {
+                if (verifyForm()) {
+                  const res = await signIn("credentials", {
                     email,
                     password,
                     redirect: false,
                   });
+
+                  console.log(res);
+                  if (res && !res.ok) setApiErrorMsg(res.error);
+                }
               }}
             >
               Log In
