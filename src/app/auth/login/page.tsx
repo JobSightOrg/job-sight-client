@@ -10,6 +10,7 @@ import NameIcon from "@/../public/assets/icons/name.svg";
 import EmailIcon from "@/../public/assets/icons/email.svg";
 import PasswordIcon from "@/../public/assets/icons/password.svg";
 import ErrorIcon from "@/../public/assets/icons/error.svg";
+import { useRouter } from "next/navigation";
 
 interface ErrorMsgObj {
   name?: string;
@@ -19,6 +20,7 @@ interface ErrorMsgObj {
 }
 
 export default function Login() {
+  const router = useRouter();
   const isMounted = useRef(false);
   const [isLogin, setLogin] = useState<boolean>(true);
   const [error, setError] = useState<ErrorMsgObj | null>(null);
@@ -212,8 +214,9 @@ export default function Login() {
                     redirect: false,
                   });
 
-                  console.log(res);
-                  if (res && !res.ok) setApiErrorMsg(res.error);
+                  // console.log(res);
+                  if (res)
+                    res.ok ? router.push("/") : setApiErrorMsg(res.error);
                 }
               }}
             >
@@ -239,7 +242,7 @@ export default function Login() {
             <Button
               className="flex justify-center align-middle px-[1rem] py-[0.75rem]"
               variant="github"
-              onClick={() => signIn("github")}
+              onClick={() => signIn("github", { callbackUrl: "/" })}
             >
               <Image
                 loading="lazy"
@@ -253,7 +256,7 @@ export default function Login() {
             <Button
               className="flex justify-start align-middle px-[1rem] py-[0.75rem]"
               variant="google"
-              onClick={() => signIn("google")}
+              onClick={() => signIn("google", { callbackUrl: "/" })}
             >
               <Image
                 loading="lazy"
