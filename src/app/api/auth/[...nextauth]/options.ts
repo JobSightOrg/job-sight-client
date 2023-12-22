@@ -60,8 +60,6 @@ export const options: NextAuthOptions = {
             user.hashedPassword as string
           );
 
-          console.log(passwordMatch);
-
           if (!passwordMatch) throw new CustomError("Incorrect password", 401);
 
           return user;

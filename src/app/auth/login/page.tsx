@@ -76,6 +76,9 @@ export default function Login() {
     let currError: ErrorMsgObj = {};
 
     if (!email) currError.email = "Email is required";
+    else if (!isValidEmail(email))
+      currError.email = "Not a valid email address";
+
     if (password.length < 6)
       currError.password = "Password length must be at least 6 characters";
 
@@ -152,8 +155,8 @@ export default function Login() {
         </div>
         {apiErrorMsg && (
           <>
-            <ErrorIcon className="h-7 w-7 m-auto" />
-            <div className="w-full items-center text-center border text-customLogoColor-500 border-customLogoColor-100 bg-red-100 rounded-lg mb-3 p-2">
+            <div className="w-full items-center text-center border text-customLogoColor-500 border-customLogoColor-100 bg-red-100 rounded-lg mb-3 p-1">
+              <ErrorIcon className="h-7 w-7 m-auto" />
               <div className="break-words">
                 <p className="text-sm">{apiErrorMsg}</p>
               </div>
@@ -174,7 +177,7 @@ export default function Login() {
         <TextBox
           className="mb-3"
           placeholder="E-mail"
-          error={email ? null : error?.email}
+          error={email && isValidEmail(email) ? null : error?.email}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         >
