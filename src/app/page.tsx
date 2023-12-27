@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { SessionProvider } from "next-auth/react";
+import NavBar from "./_components/navbar";
 import JobSearch from "./_components/job-search";
 import JobPost from "./_components/job-post";
 import AddModal from "./_components/add-modal";
@@ -30,14 +32,24 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="items-center justify-between pt-10 px-[25rem]">
-      <JobSearch openAddModal={() => setShowAddModal(true)} />
-      <JobPost jobListings={jobListings} loadJobListings={loadJobListings} />
-      <AddModal
-        isVisible={showAddModal}
-        loadJobListings={loadJobListings}
-        onClose={() => setShowAddModal(false)}
-      />
+    <main className="h-dvh">
+      <SessionProvider>
+        <div className="h-1/8">
+          <NavBar />
+        </div>
+        <div className="items-center justify-between pt-10 px-[25rem] h-7/8">
+          <JobSearch openAddModal={() => setShowAddModal(true)} />
+          <JobPost
+            jobListings={jobListings}
+            loadJobListings={loadJobListings}
+          />
+          <AddModal
+            isVisible={showAddModal}
+            loadJobListings={loadJobListings}
+            onClose={() => setShowAddModal(false)}
+          />
+        </div>
+      </SessionProvider>
     </main>
   );
 }

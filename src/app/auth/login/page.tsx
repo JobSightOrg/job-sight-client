@@ -5,11 +5,11 @@ import Button from "@/components/button";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { signIn } from "next-auth/react";
-import Logo from "@/../public/logo.png";
-import NameIcon from "@/../public/assets/icons/name.svg";
-import EmailIcon from "@/../public/assets/icons/email.svg";
-import PasswordIcon from "@/../public/assets/icons/password.svg";
-import ErrorIcon from "@/../public/assets/icons/error.svg";
+import Logo from "~/public/logo.png";
+import NameIcon from "~/public/assets/icons/name.svg";
+import EmailIcon from "~/public/assets/icons/email.svg";
+import PasswordIcon from "~/public/assets/icons/password.svg";
+import ErrorIcon from "~/public/assets/icons/error.svg";
 import { useRouter } from "next/navigation";
 
 interface ErrorMsgObj {
@@ -217,7 +217,8 @@ export default function Login() {
                     redirect: false,
                   });
 
-                  // console.log(res);
+                  console.log("here", res);
+
                   if (res)
                     res.ok ? router.push("/") : setApiErrorMsg(res.error);
                 }

@@ -18,9 +18,10 @@ export const options: NextAuthOptions = {
     secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
   }),
   callbacks: {
-    // async signIn({ user, account, profile, email, credentials }) {
-    //   return true;
-    // },
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log(user, account, profile);
+      return true;
+    },
     async redirect({ url, baseUrl }) {
       return url.startsWith(baseUrl)
         ? Promise.resolve(url)
