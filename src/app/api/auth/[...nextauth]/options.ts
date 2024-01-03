@@ -22,11 +22,11 @@ export const options: NextAuthOptions = {
     //   console.log(user, account, profile);
     //   return true;
     // },
-    async redirect({ url, baseUrl }) {
-      return url.startsWith(baseUrl)
-        ? Promise.resolve(url)
-        : Promise.resolve(baseUrl);
-    },
+    // async redirect({ url, baseUrl }) {
+    //   return url.startsWith(baseUrl)
+    //     ? Promise.resolve(url)
+    //     : Promise.resolve(baseUrl);
+    // },
   },
   providers: [
     CredentialsProvider({
