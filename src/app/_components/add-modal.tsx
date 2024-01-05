@@ -3,6 +3,7 @@ import Modal from "@/components/modal";
 import { Props } from "@/components/modal";
 import { svgFiles } from "@/lib/svg-loader";
 import React, { useEffect, useState } from "react";
+import { validateSite } from "@/lib/site-validation";
 
 enum Company {
   Google = "Google",
@@ -25,6 +26,7 @@ export default function AddModal({
   const [selectedCompany, setSelectedCompany] =
     useState<string>("Select Company");
   const [urlInput, setUrlInput] = useState<string>("");
+  const [formError, setFormError] = useState<string>("");
 
   const resetState = (): void => {
     setToggleDropdown(false);
@@ -162,7 +164,10 @@ export default function AddModal({
           />
           <button
             className="focus:ring-2 focus:ring-offset-2 rounded-md focus:ring-indigo-600 absolute right-0 top-0 transition duration-150 ease-in-out hover:bg-indigo-600 focus:outline-none bg-indigo-700 rounded-r text-white px-5 h-10 text-sm"
-            onClick={() => postJobListing()}
+            onClick={() => {
+              if (validateSite(urlInput, selectedCompany)) postJobListing();
+              else setFormError("");
+            }}
           >
             Submit
           </button>
