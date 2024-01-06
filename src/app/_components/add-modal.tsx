@@ -2,8 +2,9 @@ import Image from "next/image";
 import Modal from "@/components/modal";
 import { Props } from "@/components/modal";
 import { svgFiles } from "@/lib/svg-loader";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { validateSite } from "@/lib/site-validation";
+import { GlobalStateContext } from "../context/GlobalStateProvider";
 
 enum Company {
   Google = "Google",
@@ -13,20 +14,26 @@ enum Company {
   Microsoft = "Microsoft",
 }
 
-type AddModalProps = Props & {
+type AddModalProps = {
   loadJobListings: () => Promise<void>;
+  onClose: () => void;
 };
 
 export default function AddModal({
-  isVisible,
   loadJobListings,
   onClose,
 }: AddModalProps): JSX.Element {
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
-  const [selectedCompany, setSelectedCompany] =
-    useState<string>("Select Company");
-  const [urlInput, setUrlInput] = useState<string>("");
   const [formError, setFormError] = useState<string>("");
+
+  const {
+    selectedCompany,
+    setSelectedCompany,
+    urlInput,
+    setUrlInput,
+    showAddModal,
+    setShowAddModal,
+  } = useContext(GlobalStateContext);
 
   const resetState = (): void => {
     setToggleDropdown(false);
@@ -52,10 +59,17 @@ export default function AddModal({
       .catch((err) => console.error(err));
   };
 
-  useEffect(() => resetState(), [onClose]);
+  useEffect(() => {
+    if (!showAddModal) resetState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showAddModal]);
 
   return (
-    <Modal isVisible={isVisible} title={"Add Job Listing"} onClose={onClose}>
+    <Modal
+      isVisible={showAddModal}
+      title={"Add Job Listing"}
+      onClose={() => setShowAddModal(false)}
+    >
       <div className="flex-col items-stretch p-4">
         <div className="flex mb-4">
           {svgFiles[selectedCompany] ? (

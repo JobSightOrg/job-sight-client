@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { JobListings } from "../page";
 import { svgFiles } from "@/lib/svg-loader";
+import { useContext } from "react";
+import { GlobalStateContext } from "../context/GlobalStateProvider";
 
 type JobPostProps = {
   jobListings: JobListings[];
@@ -11,6 +13,9 @@ export default function JobPost({
   jobListings,
   loadJobListings,
 }: JobPostProps): JSX.Element {
+  const { setSelectedCompany, setUrlInput, setShowAddModal } =
+    useContext(GlobalStateContext);
+
   const deleteJobListing = (id: number): void => {
     const data = { id };
 
@@ -105,6 +110,11 @@ export default function JobPost({
                 strokeWidth={1.5}
                 stroke="currentColor"
                 className="w-9 h-9 mr-1 hover:text-yellow-500"
+                onClick={() => {
+                  setUrlInput(jobListing.url);
+                  setSelectedCompany(jobListing.companyName);
+                  setShowAddModal(true);
+                }}
               >
                 <path
                   strokeLinecap="round"

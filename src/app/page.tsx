@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import JobSearch from "./_components/job-search";
 import JobPost from "./_components/job-post";
 import AddModal from "./_components/add-modal";
+import GlobalStateProvider from "./context/GlobalStateProvider";
 
 export interface JobListings {
   id: number;
@@ -30,14 +31,13 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <GlobalStateProvider>
       <JobSearch openAddModal={() => setShowAddModal(true)} />
       <JobPost jobListings={jobListings} loadJobListings={loadJobListings} />
       <AddModal
-        isVisible={showAddModal}
         loadJobListings={loadJobListings}
         onClose={() => setShowAddModal(false)}
       />
-    </>
+    </GlobalStateProvider>
   );
 }
