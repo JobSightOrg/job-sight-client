@@ -14,19 +14,12 @@ enum Company {
   Microsoft = "Microsoft",
 }
 
-type AddModalProps = {
-  loadJobListings: () => Promise<void>;
-  onClose: () => void;
-};
-
-export default function AddModal({
-  loadJobListings,
-  onClose,
-}: AddModalProps): JSX.Element {
+export default function AddModal(): JSX.Element {
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
   const [formError, setFormError] = useState<string>("");
 
   const {
+    loadJobListings,
     selectedCompany,
     setSelectedCompany,
     urlInput,
@@ -40,6 +33,8 @@ export default function AddModal({
     setSelectedCompany("Select Company");
     setUrlInput("");
   };
+
+  const onClose = (): void => setShowAddModal(false);
 
   const postJobListing = (): void => {
     const data = { companyName: selectedCompany, url: urlInput };
@@ -65,11 +60,7 @@ export default function AddModal({
   }, [showAddModal]);
 
   return (
-    <Modal
-      isVisible={showAddModal}
-      title={"Add Job Listing"}
-      onClose={() => setShowAddModal(false)}
-    >
+    <Modal isVisible={showAddModal} title={"Add Job Listing"} onClose={onClose}>
       <div className="flex-col items-stretch p-4">
         <div className="flex mb-4">
           {svgFiles[selectedCompany] ? (
@@ -99,7 +90,9 @@ export default function AddModal({
               aria-haspopup="true"
               onClick={() => setToggleDropdown(!toggleDropdown)}
             >
-              <p>{selectedCompany}</p>
+              <p>
+                {selectedCompany.length ? selectedCompany : "Select Company"}
+              </p>
               <svg
                 className="-mr-1 h-5 w-5 text-gray-400"
                 viewBox="0 0 20 20"
@@ -179,6 +172,7 @@ export default function AddModal({
           <button
             className="focus:ring-2 focus:ring-offset-2 rounded-md focus:ring-indigo-600 absolute right-0 top-0 transition duration-150 ease-in-out hover:bg-indigo-600 focus:outline-none bg-indigo-700 rounded-r text-white px-5 h-10 text-sm"
             onClick={() => {
+              console.log(validateSite(urlInput, selectedCompany));
               if (validateSite(urlInput, selectedCompany)) postJobListing();
               else setFormError("");
             }}

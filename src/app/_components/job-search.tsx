@@ -1,10 +1,9 @@
-type JobSearchProps = {
-  openAddModal: () => void;
-};
+import { useContext } from "react";
+import { GlobalStateContext } from "../context/GlobalStateProvider";
 
-export default function JobSearch({
-  openAddModal,
-}: JobSearchProps): JSX.Element {
+export default function JobSearch(): JSX.Element {
+  const { setShowAddModal } = useContext(GlobalStateContext);
+
   return (
     <div className="flex">
       <form className="w-4/6">
@@ -50,7 +49,7 @@ export default function JobSearch({
       <a
         href="#_"
         className="w-1/6 ml-2 inline-flex overflow-hidden text-white bg-blue-500 rounded group font-bold"
-        onClick={openAddModal}
+        onClick={() => setShowAddModal(true)}
       >
         <span className="px-3.5 py-2 text-white bg-green-500 group-hover:bg-green-600 flex items-center justify-center">
           <svg

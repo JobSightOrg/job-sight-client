@@ -1,20 +1,16 @@
 import Image from "next/image";
-import { JobListings } from "../page";
 import { svgFiles } from "@/lib/svg-loader";
 import { useContext } from "react";
 import { GlobalStateContext } from "../context/GlobalStateProvider";
 
-type JobPostProps = {
-  jobListings: JobListings[];
-  loadJobListings: () => Promise<void>;
-};
-
-export default function JobPost({
-  jobListings,
-  loadJobListings,
-}: JobPostProps): JSX.Element {
-  const { setSelectedCompany, setUrlInput, setShowAddModal } =
-    useContext(GlobalStateContext);
+export default function JobPost(): JSX.Element {
+  const {
+    jobListings,
+    loadJobListings,
+    setSelectedCompany,
+    setUrlInput,
+    setShowAddModal,
+  } = useContext(GlobalStateContext);
 
   const deleteJobListing = (id: number): void => {
     const data = { id };
