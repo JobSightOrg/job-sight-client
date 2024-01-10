@@ -10,6 +10,7 @@ export default function JobPost(): JSX.Element {
     setSelectedCompany,
     setUrlInput,
     setShowAddModal,
+    setEditModal,
   } = useContext(GlobalStateContext);
 
   const deleteJobListing = (id: number): void => {
@@ -107,6 +108,7 @@ export default function JobPost(): JSX.Element {
                 stroke="currentColor"
                 className="w-9 h-9 mr-1 hover:text-yellow-500"
                 onClick={() => {
+                  setEditModal(true);
                   setUrlInput(jobListing.url);
                   setSelectedCompany(jobListing.companyName);
                   setShowAddModal(true);

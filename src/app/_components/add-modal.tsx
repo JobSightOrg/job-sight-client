@@ -26,12 +26,15 @@ export default function AddModal(): JSX.Element {
     setUrlInput,
     showAddModal,
     setShowAddModal,
+    editModal,
+    setEditModal,
   } = useContext(GlobalStateContext);
 
   const resetState = (): void => {
     setToggleDropdown(false);
     setSelectedCompany("Select Company");
     setUrlInput("");
+    setEditModal(false);
   };
 
   const onClose = (): void => setShowAddModal(false);
@@ -60,7 +63,11 @@ export default function AddModal(): JSX.Element {
   }, [showAddModal]);
 
   return (
-    <Modal isVisible={showAddModal} title={"Add Job Listing"} onClose={onClose}>
+    <Modal
+      isVisible={showAddModal}
+      title={`${editModal ? "Edit" : "Add"} Job Listing`}
+      onClose={onClose}
+    >
       <div className="flex-col items-stretch p-4">
         <div className="flex mb-4">
           {svgFiles[selectedCompany] ? (
@@ -172,7 +179,6 @@ export default function AddModal(): JSX.Element {
           <button
             className="focus:ring-2 focus:ring-offset-2 rounded-md focus:ring-indigo-600 absolute right-0 top-0 transition duration-150 ease-in-out hover:bg-indigo-600 focus:outline-none bg-indigo-700 rounded-r text-white px-5 h-10 text-sm"
             onClick={() => {
-              console.log(validateSite(urlInput, selectedCompany));
               if (validateSite(urlInput, selectedCompany)) postJobListing();
               else setFormError("");
             }}

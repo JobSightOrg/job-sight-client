@@ -17,6 +17,12 @@ const isValidBody = (body: any, requestType: string): body is RequestBody => {
         (body as RequestBody).url !== undefined &&
         (body as RequestBody).companyName !== undefined
       );
+    case "patch":
+      return (
+        (body as RequestBody).id !== undefined &&
+        (body as RequestBody).url !== undefined &&
+        (body as RequestBody).companyName !== undefined
+      );
     case "delete":
       return (body as RequestBody).id !== undefined;
     default:
@@ -44,6 +50,27 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ status: 200 });
   } catch (err) {
     console.error("Failed POST /api/listing\n", err);
+
+    if (err instanceof CustomError)
+      return NextResponse.json({ status: err.statusCode || 500 });
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const body = await req.json();
+
+    if (!isValidBody(body, "patch")) throw new CustomError("Invalid Body", 400);
+
+    const { id, companyName, url } = body;
+
+    await prisma.job_listing?.update({
+      where: { id },
+      data: { companyName, url },
+    });
+    return NextResponse.json({ status: 200 });
+  } catch (err) {
+    console.error("Failed PATCH /api/listing\n", err);
 
     if (err instanceof CustomError)
       return NextResponse.json({ status: err.statusCode || 500 });

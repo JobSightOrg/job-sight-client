@@ -12,6 +12,8 @@ type GlobalState = {
   setSelectedCompany: React.Dispatch<React.SetStateAction<string>>;
   urlInput: string;
   setUrlInput: React.Dispatch<React.SetStateAction<string>>;
+  editModal: boolean;
+  setEditModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type JobListings = {
@@ -32,6 +34,8 @@ export const GlobalStateContext = createContext<GlobalState>({
   setSelectedCompany: () => {},
   urlInput: "",
   setUrlInput: () => {},
+  editModal: false,
+  setEditModal: () => {},
 });
 
 export default function GlobalStateProvider({
@@ -43,6 +47,7 @@ export default function GlobalStateProvider({
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<string>("");
   const [urlInput, setUrlInput] = useState<string>("");
+  const [editModal, setEditModal] = useState<boolean>(false);
 
   const loadJobListings = (): Promise<void> =>
     fetch("/api/listing", {
@@ -62,6 +67,8 @@ export default function GlobalStateProvider({
     setSelectedCompany,
     urlInput,
     setUrlInput,
+    editModal,
+    setEditModal,
   };
 
   useEffect((): void => {
