@@ -1,4 +1,3 @@
-import NavBar from "./_components/navbar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -20,10 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <NavBar />
-          <main className="h-dvh items-center justify-between pt-10 px-[25rem]">
-            {children}
-          </main>
+          <main className="h-dvh">{children}</main>
         </AuthProvider>
       </body>
     </html>

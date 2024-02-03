@@ -6,7 +6,7 @@ export default function JobSearch(): JSX.Element {
 
   return (
     <div className="flex">
-      <form className="w-4/6">
+      <form className="w-5/6">
         <label
           htmlFor="default-search"
           className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -70,7 +70,7 @@ export default function JobSearch(): JSX.Element {
         </span>
         <span className="m-auto">Post a job</span>
       </a>
-      <button className="w-1/6 ml-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center justify-center">
+      {/* <button className="w-1/6 ml-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center justify-center">
         <span className="mr-2">Download</span>
         <svg
           className="w-4 h-4"
@@ -79,7 +79,7 @@ export default function JobSearch(): JSX.Element {
         >
           <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
         </svg>
-      </button>
+      </button> */}
     </div>
   );
 }

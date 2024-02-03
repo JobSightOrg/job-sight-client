@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Modal from "@/components/modal";
-import { Props } from "@/components/modal";
 import { svgFiles } from "@/lib/svg-loader";
 import React, { useContext, useEffect, useState } from "react";
 import { validateSite } from "@/lib/site-validation";
