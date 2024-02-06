@@ -15,8 +15,7 @@ export default function Home() {
     const securePage = async () => {
       const session = await getSession();
 
-      if (!session) signIn();
-      else setLoading(false);
+      !session ? await signIn() : setLoading(false);
     };
 
     securePage();
