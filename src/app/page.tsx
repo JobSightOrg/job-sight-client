@@ -7,6 +7,7 @@ import AddModal from "./_components/add-modal";
 import GlobalStateProvider from "./context/GlobalStateProvider";
 import NavBar from "./_components/navbar";
 import { getSession, signIn } from "next-auth/react";
+import Loading from "@/components/loading";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -24,7 +25,7 @@ export default function Home() {
   return (
     <>
       {loading ? (
-        <h2>Loading...</h2>
+        <Loading />
       ) : (
         <>
           <NavBar />

@@ -11,6 +11,7 @@ import EmailIcon from "~/public/assets/icons/email.svg";
 import PasswordIcon from "~/public/assets/icons/password.svg";
 import ErrorIcon from "~/public/assets/icons/error.svg";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/loading";
 
 interface ErrorMsgObj {
   name?: string;
@@ -137,7 +138,7 @@ export default function Login() {
   return (
     <>
       {isLoading ? (
-        <h2>Loading...</h2>
+        <Loading />
       ) : (
         <div className="w-full flex justify-center items-center h-screen bg-gradient-to-br">
           <div className="w-[400px] p-4 shadow bg-white rounded-md flex flex-col gap-2">

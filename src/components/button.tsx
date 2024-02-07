@@ -18,7 +18,7 @@ export interface IButtonProps
   paddingLess?: boolean;
 }
 
-const Button = ({
+export default function Button({
   className,
   children,
   variant,
@@ -26,7 +26,7 @@ const Button = ({
   paddingLess,
   type = "button",
   ...props
-}: IButtonProps) => {
+}: IButtonProps): JSX.Element {
   const getVariant = () => {
     switch (variant) {
       case "none":
@@ -69,6 +69,4 @@ const Button = ({
       {children}
     </button>
   );
-};
-
-export default Button;
+}
