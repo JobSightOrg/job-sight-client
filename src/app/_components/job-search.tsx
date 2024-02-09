@@ -97,9 +97,9 @@ export default function JobSearch(): JSX.Element {
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
-              <span className="h-max">Add job</span>
+              <span className="h-full">Add job</span>
             </button>
-            <button className="w-60 h-15 px-3 py-2 inline-flex items-center justify-center overflow-hidden text-white text-xl font-semibold bg-customLogoColor-500 hover:bg-customLogoColor-800 shadow-sm transition duration-150 ease-in-out rounded-sm cursor-pointer">
+            <button className="w-48 h-15 px-3 py-2 inline-flex items-center justify-center overflow-hidden text-white text-xl font-semibold bg-customLogoColor-500 hover:bg-customLogoColor-800 shadow-sm transition duration-150 ease-in-out rounded-sm cursor-pointer">
               <svg
                 className="w-5 h-5 mr-2"
                 xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@ export default function JobSearch(): JSX.Element {
               >
                 <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
               </svg>
-              <span className="">Download</span>
+              <span className="h-full">Download</span>
             </button>
           </div>
         </div>
