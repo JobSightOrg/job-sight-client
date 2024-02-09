@@ -35,7 +35,7 @@ export default function JobPost(): JSX.Element {
       {jobListings.map((jobListing) => (
         <div
           key={jobListing.id}
-          className="w-[700px] mx-auto select-none cursor-pointer flex-col border-2 border-black rounded-md hover:shadow mb-4 shadow-md"
+          className="w-[700px] mx-auto mb-4 select-none cursor-pointer flex-col border-2 border-black rounded-md hover:shadow shadow-md"
         >
           <div className="flex px-1 pt-1">
             {svgFiles[jobListing.companyName] ? (
