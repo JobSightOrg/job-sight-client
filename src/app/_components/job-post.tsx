@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { svgFiles } from "@/lib/svg-loader";
-import { useContext } from "react";
+import { Fragment, useContext } from "react";
 import { GlobalStateContext } from "../context/GlobalStateProvider";
 
 export default function JobPost(): JSX.Element {
+  const status = ["applied", "screen", "interview", "offer"];
   const {
     jobListings,
     loadJobListings,
@@ -31,184 +32,114 @@ export default function JobPost(): JSX.Element {
   };
 
   return (
-    <div className="w-full mt-5 justify-center items-center">
+    <div className="mt-5 justify-center items-center">
       {jobListings.map((jobListing) => (
         <div
           key={jobListing.id}
-          className="px-4 py-2 mb-4 select-none cursor-pointer flex-col border-2 border-black rounded-md hover:shadow shadow-md"
+          className="block px-4 py-2 mb-4 rounded-md bg-white hover:shadow shadow-md"
         >
-          <div className="flex">
-            {svgFiles[jobListing.companyName] ? (
-              <div className="rounded-md">
-                {svgFiles[jobListing.companyName]({
-                  width: 70,
-                  height: 70,
-                })}
-              </div>
-            ) : (
-              <Image
-                className="rounded-md"
-                src="https://source.unsplash.com/blue-and-white-letter-b-9Zjd7PE_FRM"
-                width={90}
-                height={90}
-                alt=""
-              />
-            )}
-            <div className="ml-4">
-              <p className="text-xl font-bold">Full Stack Developer</p>
-              <div className="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8"></path>
-                  <line x1="13" y1="7" x2="13" y2="7.01"></line>
-                  <line x1="17" y1="7" x2="17" y2="7.01"></line>
-                  <line x1="17" y1="11" x2="17" y2="11.01"></line>
-                  <line x1="17" y1="15" x2="17" y2="15.01"></line>
-                </svg>
-                <p className="text-base ml-1">{jobListing.companyName}</p>
-              </div>
-              <div className="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <circle cx="12" cy="11" r="3"></circle>
-                  <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
-                </svg>
-                <p className="text-base ml-1">Long Beach, CA</p>
-              </div>
-            </div>
-            <div className="flex justify-end items-center">
-              <div className="mx-4 w-full flex-1 items-center md:mr-0 lg:ml-8">
-                <div className="flex grow">
-                  <div className="z-10 flex shrink-0 flex-col items-center">
-                    <div className="mb-2 text-xs" data-testid="applied">
-                      Applied
-                    </div>
-                    <div
-                      className="bg-primary-base mx-auto flex h-6 w-6 items-center rounded-full text-lg text-white"
-                      data-testid="background-circle-applied"
-                    >
-                      <span
-                        className="text-primary-base w-full text-center"
-                        data-testid="text-circle-applied"
-                      >
-                        <svg
-                          stroke="currentColor"
-                          fill="currentColor"
-                          strokeWidth="0"
-                          viewBox="0 0 16 16"
-                          className="w-full fill-current"
-                          data-testid="circle-applied"
-                          height="1em"
-                          width="1em"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle cx="8" cy="8" r="8"></circle>
-                        </svg>
-                      </span>
-                    </div>
-                    <div className="mt-2 h-4 text-xs">2/8/24</div>
-                  </div>
-                  <div className="flex grow content-center items-center align-middle">
-                    <div className="-mx-4 w-full flex-1 items-center rounded bg-primary-base align-middle">
-                      <div
-                        className="bg-primary-light rounded py-0.5 text-center text-xs leading-none"
-                        data-testid="background-line-screen"
-                      ></div>
-                    </div>
-                  </div>
-                  <div className="z-10 flex shrink-0 flex-col items-center">
-                    <div className="mb-2 text-xs" data-testid="screen">
-                      Screen
-                    </div>
-                    <div
-                      className="bg-white border-2 border-gray-300 mx-auto flex h-6 w-6 items-center rounded-full text-lg text-white"
-                      data-testid="background-circle-screen"
-                    >
-                      <span
-                        className="text-primary-base w-full text-center"
-                        data-testid="text-circle-screen"
-                      ></span>
-                    </div>
-                    <div
-                      className="mt-2 h-4 text-xs"
-                      data-testid="date-screen"
-                    ></div>
-                  </div>
-                  <div className="flex grow content-center items-center align-middle">
-                    <div className="-mx-4 w-full flex-1 items-center rounded bg-primary-base align-middle">
-                      <div
-                        className="bg-primary-light rounded py-0.5 text-center text-xs leading-none"
-                        data-testid="background-line-interview"
-                      ></div>
-                    </div>
-                  </div>
-                  <div className="z-10 flex shrink-0 flex-col items-center">
-                    <div className="mb-2 text-xs" data-testid="interview">
-                      Interview
-                    </div>
-                    <div
-                      className="bg-white border-2 border-gray-300 mx-auto flex h-6 w-6 items-center rounded-full text-lg text-white"
-                      data-testid="background-circle-interview"
-                    >
-                      <span
-                        className="text-primary-base w-full text-center"
-                        data-testid="text-circle-interview"
-                      ></span>
-                    </div>
-                    <div
-                      className="mt-2 h-4 text-xs"
-                      data-testid="date-interview"
-                    ></div>
-                  </div>
-                  <div className="flex grow content-center items-center align-middle">
-                    <div className="-mx-4 w-full flex-1 items-center rounded bg-primary-base align-middle">
-                      <div
-                        className="bg-primary-light rounded py-0.5 text-center text-xs leading-none"
-                        data-testid="background-line-offer"
-                      ></div>
-                    </div>
-                  </div>
-                  <div className="z-10 flex shrink-0 flex-col items-center">
-                    <div className="mb-2 text-xs" data-testid="offer">
-                      Offer
-                    </div>
-                    <div
-                      className="border-2 border-gray-300 bg-white mx-auto flex h-6 w-6 items-center rounded-full text-lg text-white"
-                      data-testid="background-circle-offer"
-                    >
-                      <span
-                        className="w-full text-center text-green-300"
-                        data-testid="text-circle-offer"
-                      ></span>
-                    </div>
-                    <div
-                      className="mt-2 h-4 text-xs"
-                      data-testid="date-offer"
-                    ></div>
-                  </div>
+          <div className="flex w-full flex-1 flex-col items-center md:w-auto md:flex-row">
+            <div className="flex w-full shrink-0 items-center justify-center md:mb-0 md:w-auto">
+              {svgFiles[jobListing.companyName] ? (
+                <div className="rounded-md shrink-0">
+                  {svgFiles[jobListing.companyName]({
+                    width: 70,
+                    height: 70,
+                  })}
+                </div>
+              ) : (
+                <Image
+                  className="rounded-md"
+                  src="https://source.unsplash.com/blue-and-white-letter-b-9Zjd7PE_FRM"
+                  width={90}
+                  height={90}
+                  alt=""
+                />
+              )}
+              <div className="ml-4 w-full truncate md:min-w-3xs md:max-w-3xs lg:min-w-xs lg:max-w-xs xl:min-w-lg xl:max-w-lg">
+                <p className="text-xl font-bold">Full Stack Developer</p>
+                <div className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8"></path>
+                    <line x1="13" y1="7" x2="13" y2="7.01"></line>
+                    <line x1="17" y1="7" x2="17" y2="7.01"></line>
+                    <line x1="17" y1="11" x2="17" y2="11.01"></line>
+                    <line x1="17" y1="15" x2="17" y2="15.01"></line>
+                  </svg>
+                  <p className="text-base ml-1">{jobListing.companyName}</p>
+                </div>
+                <div className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <circle cx="12" cy="11" r="3"></circle>
+                    <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
+                  </svg>
+                  <p className="text-base ml-1">Long Beach, CA</p>
                 </div>
               </div>
-              <button className="bg-white text-green-500 border-2 border-green-500 font-bold rounded h-12 mr-8">
+            </div>
+            <div className="w-full flex justify-end items-center">
+              <div className="w-full flex-1 items-center md:mr-0 lg:ml-8">
+                <div className="flex grow">
+                  {status.map((currStatus, idx) => (
+                    <Fragment key={idx}>
+                      <div className="z-10 flex shrink-0 flex-col items-center">
+                        <div className="mb-2 text-xs">
+                          {currStatus.charAt(0).toUpperCase() +
+                            currStatus.slice(1)}
+                        </div>
+                        <div className="bg-customLogoColor-100 mx-auto flex h-6 w-6 items-center rounded-full text-lg text-white">
+                          <span className="w-full text-center">
+                            <svg
+                              stroke="currentColor"
+                              fill="currentColor"
+                              strokeWidth="0"
+                              viewBox="0 0 16 16"
+                              className="w-full fill-current"
+                              data-testid="circle-applied"
+                              height="1em"
+                              width="1em"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle cx="8" cy="8" r="8"></circle>
+                            </svg>
+                          </span>
+                        </div>
+                        <div className="mt-2 h-4 text-xs">2/8/24</div>
+                      </div>
+                      {idx !== status.length - 1 && (
+                        <div className="flex grow content-center items-center align-middle">
+                          <div className="-mx-4 w-full flex-1 items-center rounded bg-customLogoColor-100 align-middle">
+                            <div className="bg-customLogoColor-100 rounded py-0.5 text-center text-xs leading-none"></div>
+                          </div>
+                        </div>
+                      )}
+                    </Fragment>
+                  ))}
+                </div>
+              </div>
+              <button className="bg-white text-green-500 border-2 border-green-500 font-bold rounded h-12 mx-8">
                 <span className="px-4">Open</span>
               </button>
               <svg
@@ -248,9 +179,6 @@ export default function JobPost(): JSX.Element {
               </svg>
             </div>
           </div>
-          {/* <div className="flow-root">
-            <p className="float-right pr-1 text-sm">Posted 11/21/2023</p>
-          </div> */}
         </div>
       ))}
     </div>
