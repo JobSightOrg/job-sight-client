@@ -4,6 +4,7 @@ import { svgFiles } from "@/lib/svg-loader";
 import React, { useContext, useEffect, useState } from "react";
 import { validateSite } from "@/lib/site-validation";
 import { GlobalStateContext } from "../context/GlobalStateProvider";
+import Dropdown from "@/components/dropdown";
 
 enum Company {
   Google = "Google",
@@ -70,24 +71,24 @@ export default function AddModal(): JSX.Element {
       <div className="flex-col items-stretch p-4">
         <div className="flex mb-4">
           {svgFiles[selectedCompany] ? (
-            <div className="m-auto">
+            <div className="mr-4">
               {svgFiles[selectedCompany]({
-                width: 150,
-                height: 150,
+                width: 120,
+                height: 120,
               })}
             </div>
           ) : (
             <Image
-              className="rounded-md w-1/3 m-auto"
+              className="rounded-md mr-4"
               src={
                 "https://source.unsplash.com/blue-and-white-letter-b-9Zjd7PE_FRM"
               }
-              width={100}
-              height={100}
+              width={120}
+              height={120}
               alt=""
             />
           )}
-          <div className="w-2/3 pl-4 flex-col">
+          <div className="w-full flex-col">
             <button
               type="button"
               className="inline-flex w-full justify-between gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
@@ -145,6 +146,12 @@ export default function AddModal(): JSX.Element {
               </div>
             )}
           </div>
+        </div>
+        <div className="flex flex-col">
+          <label className="block text-sm font-medium leading-5 text-gray-700 mb-1">
+            Application Status
+          </label>
+          <Dropdown />
         </div>
         <div className="relative w-full">
           <div className="absolute text-gray-500 flex items-center px-2 border-r h-full">

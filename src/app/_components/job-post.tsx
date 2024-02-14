@@ -4,7 +4,8 @@ import { Fragment, useContext } from "react";
 import { GlobalStateContext } from "../context/GlobalStateProvider";
 
 export default function JobPost(): JSX.Element {
-  const status = ["applied", "screen", "interview", "offer"];
+  const status: string[] = ["applied", "screen", "interview", "offer"];
+  const currIdx = 2;
   const {
     jobListings,
     loadJobListings,
@@ -109,7 +110,13 @@ export default function JobPost(): JSX.Element {
                           {currStatus.charAt(0).toUpperCase() +
                             currStatus.slice(1)}
                         </div>
-                        <div className="bg-customLogoColor-100 mx-auto flex h-6 w-6 items-center rounded-full text-lg text-white">
+                        <div
+                          className={`${
+                            idx <= currIdx
+                              ? "bg-customLogoColor-600"
+                              : "bg-customLogoColor-100"
+                          } mx-auto flex h-6 w-6 items-center rounded-full text-lg text-white`}
+                        >
                           <span className="w-full text-center">
                             <svg
                               stroke="currentColor"
@@ -117,12 +124,13 @@ export default function JobPost(): JSX.Element {
                               strokeWidth="0"
                               viewBox="0 0 16 16"
                               className="w-full fill-current"
-                              data-testid="circle-applied"
                               height="1em"
                               width="1em"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <circle cx="8" cy="8" r="8"></circle>
+                              {idx > currIdx && (
+                                <circle cx="8" cy="8" r="8"></circle>
+                              )}
                             </svg>
                           </span>
                         </div>
@@ -130,8 +138,20 @@ export default function JobPost(): JSX.Element {
                       </div>
                       {idx !== status.length - 1 && (
                         <div className="flex grow content-center items-center align-middle">
-                          <div className="-mx-4 w-full flex-1 items-center rounded bg-customLogoColor-100 align-middle">
-                            <div className="bg-customLogoColor-100 rounded py-0.5 text-center text-xs leading-none"></div>
+                          <div
+                            className={`-mx-4 w-full flex-1 items-center rounded ${
+                              idx < currIdx
+                                ? "bg-customLogoColor-600"
+                                : "bg-customLogoColor-100"
+                            } align-middle`}
+                          >
+                            <div
+                              className={`${
+                                idx < currIdx
+                                  ? "bg-customLogoColor-600"
+                                  : "bg-customLogoColor-100"
+                              } rounded py-0.5 text-center text-xs leading-none`}
+                            ></div>
                           </div>
                         </div>
                       )}
@@ -148,7 +168,7 @@ export default function JobPost(): JSX.Element {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-9 h-9 mr-1 hover:text-yellow-500"
+                className="w-8 h-8 mr-1 hover:text-yellow-500 cursor-pointer"
                 onClick={() => {
                   setEditModal(true);
                   setUrlInput(jobListing.url);
@@ -168,7 +188,7 @@ export default function JobPost(): JSX.Element {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-9 h-9 mr-1 hover:text-red-500"
+                className="w-8 h-8 mr-1 hover:text-red-500 cursor-pointer"
                 onClick={() => deleteJobListing(jobListing.id)}
               >
                 <path
