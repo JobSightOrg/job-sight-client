@@ -147,11 +147,49 @@ export default function AddModal(): JSX.Element {
             )}
           </div>
         </div>
-        <div className="flex flex-col">
-          <label className="block text-sm font-medium leading-5 text-gray-700 mb-1">
-            Application Status
-          </label>
-          <Dropdown />
+        <div className="flex">
+          <div className="w-full flex flex-col mr-2">
+            <div className="block mb-4">
+              <label className=" block items-center text-sm font-medium leading-5 text-gray-700">
+                Position Title
+              </label>
+              <input
+                aria-label="Position Title"
+                placeholder="Title"
+                step="1"
+                type="text"
+                name="title"
+                className="form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition focus:border-primary-base focus:outline-none focus:ring-4 focus:ring-primary-lightest disabled:bg-gray-50 disabled:opacity-90 sm:text-sm sm:leading-5 "
+              />
+            </div>
+            <div className="block mb-4">
+              <label className="block text-sm font-medium leading-5 text-gray-700 mb-1">
+                Application Status
+              </label>
+              <Dropdown />
+            </div>
+          </div>
+          <div className="w-full flex flex-col ml-2">
+            <div className="block mb-4">
+              <label className=" block items-center text-sm font-medium leading-5 text-gray-700">
+                Location
+              </label>
+              <input
+                aria-label="Location"
+                placeholder="Location"
+                step="1"
+                type="text"
+                name="location"
+                className="form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition focus:border-primary-base focus:outline-none focus:ring-4 focus:ring-primary-lightest disabled:bg-gray-50 disabled:opacity-90 sm:text-sm sm:leading-5 "
+              />
+            </div>
+            <div className="block mb-4">
+              <label className="block text-sm font-medium leading-5 text-gray-700 mb-1">
+                Application Status
+              </label>
+              <Dropdown />
+            </div>
+          </div>
         </div>
         <div className="relative w-full">
           <div className="absolute text-gray-500 flex items-center px-2 border-r h-full">
