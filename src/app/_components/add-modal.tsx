@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Modal from "@/components/modal";
 import { svgFiles } from "@/lib/svg-loader";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { validateSite } from "@/lib/site-validation";
 import { GlobalStateContext } from "../context/GlobalStateProvider";
 import Dropdown from "@/components/dropdown";
@@ -17,6 +17,7 @@ enum Company {
 export default function AddModal(): JSX.Element {
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
   const [formError, setFormError] = useState<string>("");
+  const modalRef = useRef(null);
 
   const {
     loadJobListings,
@@ -166,7 +167,10 @@ export default function AddModal(): JSX.Element {
               <label className="block text-sm font-medium leading-5 text-gray-700 mb-1">
                 Application Status
               </label>
-              <Dropdown />
+              <Dropdown
+                arrayList={["Applied", "Screen", "Interview", "Offer"]}
+                placeholder="Status"
+              />
             </div>
           </div>
           <div className="w-full flex flex-col ml-2">
@@ -187,7 +191,10 @@ export default function AddModal(): JSX.Element {
               <label className="block text-sm font-medium leading-5 text-gray-700 mb-1">
                 Application Status
               </label>
-              <Dropdown />
+              <Dropdown
+                arrayList={["applied", "screen", "interview", "offer"]}
+                placeholder="Status"
+              />
             </div>
           </div>
         </div>

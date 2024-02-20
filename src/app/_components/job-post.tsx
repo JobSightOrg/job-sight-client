@@ -4,7 +4,7 @@ import { Fragment, useContext } from "react";
 import { GlobalStateContext } from "../context/GlobalStateProvider";
 
 export default function JobPost(): JSX.Element {
-  const status: string[] = ["applied", "screen", "interview", "offer"];
+  const status: string[] = ["Applied", "Screen", "Interview", "Offer"];
   const currIdx = 2;
   const {
     jobListings,
@@ -106,10 +106,7 @@ export default function JobPost(): JSX.Element {
                   {status.map((currStatus, idx) => (
                     <Fragment key={idx}>
                       <div className="z-10 flex shrink-0 flex-col items-center">
-                        <div className="mb-2 text-xs">
-                          {currStatus.charAt(0).toUpperCase() +
-                            currStatus.slice(1)}
-                        </div>
+                        <div className="mb-2 text-xs">{currStatus}</div>
                         <div
                           className={`${
                             idx <= currIdx
