@@ -15,6 +15,7 @@ enum Company {
 }
 
 export default function AddModal(): JSX.Element {
+  const [toggleAllDropdown, setAllToggleDropdown] = useState<boolean>(false);
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
   const [formError, setFormError] = useState<string>("");
   const modalRef = useRef(null);
@@ -59,6 +60,26 @@ export default function AddModal(): JSX.Element {
   };
 
   useEffect(() => {
+    console.log(modalRef);
+    let counter = 0;
+    function handleClickOutside(e: Event) {
+      counter++;
+      console.log(counter);
+      if (modalRef.current) {
+        setAllToggleDropdown(false);
+      } else {
+        document.removeEventListener("click", handleClickOutside);
+      }
+    }
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  });
+
+  useEffect(() => {
     if (!showAddModal) resetState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showAddModal]);
@@ -67,6 +88,7 @@ export default function AddModal(): JSX.Element {
     <Modal
       isVisible={showAddModal}
       title={`${editModal ? "Edit" : "Add"} Job Listing`}
+      modalRef={modalRef}
       onClose={onClose}
     >
       <div className="flex-col items-stretch p-4">
@@ -89,7 +111,17 @@ export default function AddModal(): JSX.Element {
               alt=""
             />
           )}
-          <div className="w-full flex-col">
+          <div className="w-full flex-col ml-4">
+            <div className="block mb-4">
+              <label className="block text-sm font-medium leading-5 text-gray-700 mb-1">
+                Company
+              </label>
+              <Dropdown
+                toggleCurrentDropDown={toggleAllDropdown}
+                arrayList={Object.keys(Company) as Array<keyof typeof Company>}
+                placeholder="Company"
+              />
+            </div>
             <button
               type="button"
               className="inline-flex w-full justify-between gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
@@ -168,6 +200,7 @@ export default function AddModal(): JSX.Element {
                 Application Status
               </label>
               <Dropdown
+                toggleCurrentDropDown={toggleAllDropdown}
                 arrayList={["Applied", "Screen", "Interview", "Offer"]}
                 placeholder="Status"
               />
@@ -189,11 +222,12 @@ export default function AddModal(): JSX.Element {
             </div>
             <div className="block mb-4">
               <label className="block text-sm font-medium leading-5 text-gray-700 mb-1">
-                Application Status
+                Job Type
               </label>
               <Dropdown
-                arrayList={["applied", "screen", "interview", "offer"]}
-                placeholder="Status"
+                toggleCurrentDropDown={toggleAllDropdown}
+                arrayList={["Internship", "Full-Time", "Part-Time"]}
+                placeholder="Type"
               />
             </div>
           </div>
@@ -228,7 +262,7 @@ export default function AddModal(): JSX.Element {
             required
           />
           <button
-            className="focus:ring-2 focus:ring-offset-2 rounded-md focus:ring-indigo-600 absolute right-0 top-0 transition duration-150 ease-in-out hover:bg-indigo-600 focus:outline-none bg-indigo-700 rounded-r text-white px-5 h-10 text-sm"
+            className="focus:ring-2 focus:ring-offset-2 rounded-md focus:ring-customLogoColor-600 absolute right-0 top-0 transition duration-150 ease-in-out hover:bg-customLogoColor-800 focus:outline-none bg-customLogoColor-500 rounded-r text-white px-5 h-10 text-sm"
             onClick={() => {
               if (validateSite(urlInput, selectedCompany)) postJobListing();
               else setFormError("");

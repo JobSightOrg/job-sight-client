@@ -3,17 +3,21 @@ import { useState } from "react";
 export interface IDropdownProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
+  toggleCurrentDropDown: boolean;
   arrayList: Array<any>;
   placeholder: string;
 }
 
 export default function Dropdown({
   children,
+  toggleCurrentDropDown,
   arrayList,
   placeholder,
   ...props
 }: IDropdownProps) {
-  const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
+  const [toggleDropdown, setToggleDropdown] = useState<boolean>(
+    toggleCurrentDropDown
+  );
   const [selectedItem, setSelectedItem] = useState<string>(placeholder);
 
   return (

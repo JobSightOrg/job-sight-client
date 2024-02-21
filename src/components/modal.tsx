@@ -1,9 +1,10 @@
-import React from "react";
+import React, { RefObject } from "react";
 
 export type Props = {
   isVisible: boolean;
   title?: string;
   children?: React.ReactNode;
+  modalRef?: RefObject<HTMLDivElement>;
   onClose: () => void;
 };
 
@@ -11,6 +12,7 @@ export default function Modal({
   isVisible,
   title,
   children,
+  modalRef,
   onClose,
 }: Props): JSX.Element | null {
   if (!isVisible) return null;
@@ -23,6 +25,7 @@ export default function Modal({
     <div
       className="z-50 fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex flex-col justify-center items-center"
       id="wrapper"
+      ref={modalRef}
       onClick={handleClose}
     >
       <div className="w-[600px] bg-white items-start border-b rounded dark:border-gray-600">
