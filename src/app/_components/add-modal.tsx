@@ -15,13 +15,16 @@ enum Company {
 }
 
 export default function AddModal(): JSX.Element {
-  const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
   const [formError, setFormError] = useState<string>("");
 
   const {
     loadJobListings,
     selectedCompany,
     setSelectedCompany,
+    selectedApplicationStatus,
+    setSelectedApplicationStatus,
+    selectedJobType,
+    setSelectedJobType,
     urlInput,
     setUrlInput,
     showAddModal,
@@ -31,8 +34,9 @@ export default function AddModal(): JSX.Element {
   } = useContext(GlobalStateContext);
 
   const resetState = (): void => {
-    setToggleDropdown(false);
-    setSelectedCompany("Select Company");
+    setSelectedCompany("");
+    setSelectedApplicationStatus("");
+    setSelectedJobType("");
     setUrlInput("");
     setEditModal(false);
   };
@@ -97,64 +101,10 @@ export default function AddModal(): JSX.Element {
               <Dropdown
                 arrayList={Object.keys(Company) as Array<keyof typeof Company>}
                 placeholder="Company"
+                selectedItem={selectedCompany}
+                setSelectedItem={setSelectedCompany}
               />
             </div>
-            <button
-              type="button"
-              className="inline-flex w-full justify-between gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-              id="menu-button"
-              aria-expanded="true"
-              aria-haspopup="true"
-              onClick={() => setToggleDropdown(!toggleDropdown)}
-            >
-              <p>
-                {selectedCompany.length ? selectedCompany : "Select Company"}
-              </p>
-              <svg
-                className="-mr-1 h-5 w-5 text-gray-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-            {toggleDropdown && (
-              <div
-                className="absolute z-10 mt-2 w-60 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="menu-button"
-                tabIndex={-1}
-              >
-                {(Object.keys(Company) as Array<keyof typeof Company>).map(
-                  (company, idx) => (
-                    <div
-                      className="py-1"
-                      role="none"
-                      key={idx}
-                      onClick={() => {
-                        setSelectedCompany(company);
-                        setToggleDropdown(false);
-                      }}
-                    >
-                      <button
-                        className="text-gray-700 block px-4 py-2 text-sm"
-                        role="menuitem"
-                        tabIndex={-1}
-                        id="menu-item-0"
-                      >
-                        {company}
-                      </button>
-                    </div>
-                  )
-                )}
-              </div>
-            )}
           </div>
         </div>
         <div className="flex">
@@ -169,7 +119,7 @@ export default function AddModal(): JSX.Element {
                 step="1"
                 type="text"
                 name="title"
-                className="form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition focus:border-primary-base focus:outline-none focus:ring-4 focus:ring-primary-lightest disabled:bg-gray-50 disabled:opacity-90 sm:text-sm sm:leading-5 "
+                className="form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition focus:border-primary-base focus:outline-none focus:ring-2 focus:ring-primary-lightest disabled:bg-gray-50 disabled:opacity-90 sm:text-sm sm:leading-5 "
               />
             </div>
             <div className="block mb-4">
@@ -179,6 +129,8 @@ export default function AddModal(): JSX.Element {
               <Dropdown
                 arrayList={["Applied", "Screen", "Interview", "Offer"]}
                 placeholder="Status"
+                selectedItem={selectedApplicationStatus}
+                setSelectedItem={setSelectedApplicationStatus}
               />
             </div>
           </div>
@@ -193,7 +145,7 @@ export default function AddModal(): JSX.Element {
                 step="1"
                 type="text"
                 name="location"
-                className="form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition focus:border-primary-base focus:outline-none focus:ring-4 focus:ring-primary-lightest disabled:bg-gray-50 disabled:opacity-90 sm:text-sm sm:leading-5 "
+                className="form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition focus:border-primary-base focus:outline-none focus:ring-2 focus:ring-primary-lightest disabled:bg-gray-50 disabled:opacity-90 sm:text-sm sm:leading-5 "
               />
             </div>
             <div className="block mb-4">
@@ -203,6 +155,8 @@ export default function AddModal(): JSX.Element {
               <Dropdown
                 arrayList={["Internship", "Full-Time", "Part-Time"]}
                 placeholder="Type"
+                selectedItem={selectedJobType}
+                setSelectedItem={setSelectedJobType}
               />
             </div>
           </div>
@@ -228,7 +182,7 @@ export default function AddModal(): JSX.Element {
           </div>
           <input
             id="link"
-            className="pr-24 text-gray-600 bg-gray-100 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-12 text-sm border-gray-300 rounded border"
+            className="pr-24 text-gray-600 bg-gray-100 focus:outline-none focus:border focus:border-primary-base font-normal w-full h-10 flex items-center pl-12 text-sm border-gray-300 rounded border"
             placeholder="https://google.com"
             value={urlInput}
             onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>

@@ -10,6 +10,10 @@ type GlobalState = {
   setShowAddModal: React.Dispatch<React.SetStateAction<boolean>>;
   selectedCompany: string;
   setSelectedCompany: React.Dispatch<React.SetStateAction<string>>;
+  selectedApplicationStatus: string;
+  setSelectedApplicationStatus: React.Dispatch<React.SetStateAction<string>>;
+  selectedJobType: string;
+  setSelectedJobType: React.Dispatch<React.SetStateAction<string>>;
   urlInput: string;
   setUrlInput: React.Dispatch<React.SetStateAction<string>>;
   editModal: boolean;
@@ -32,6 +36,10 @@ export const GlobalStateContext = createContext<GlobalState>({
   setShowAddModal: () => {},
   selectedCompany: "",
   setSelectedCompany: () => {},
+  selectedApplicationStatus: "",
+  setSelectedApplicationStatus: () => {},
+  selectedJobType: "",
+  setSelectedJobType: () => {},
   urlInput: "",
   setUrlInput: () => {},
   editModal: false,
@@ -46,6 +54,9 @@ export default function GlobalStateProvider({
   const [jobListings, setJobListings] = useState<JobListings[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<string>("");
+  const [selectedApplicationStatus, setSelectedApplicationStatus] =
+    useState<string>("");
+  const [selectedJobType, setSelectedJobType] = useState<string>("");
   const [urlInput, setUrlInput] = useState<string>("");
   const [editModal, setEditModal] = useState<boolean>(false);
 
@@ -65,6 +76,10 @@ export default function GlobalStateProvider({
     setShowAddModal,
     selectedCompany,
     setSelectedCompany,
+    selectedApplicationStatus,
+    setSelectedApplicationStatus,
+    selectedJobType,
+    setSelectedJobType,
     urlInput,
     setUrlInput,
     editModal,

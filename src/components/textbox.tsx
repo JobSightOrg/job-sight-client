@@ -23,7 +23,7 @@ const TextBox = React.forwardRef<HTMLInputElement, ITextBoxProps>(
       <div className="relative items-stretch">
         <input
           autoComplete="off"
-          className={`rounded-lg border border-gray-400 disabled:border-gray-100 w-full block outline-none py-2 px-2 transition-all text-xs lg:text-sm xl:text-base  bg-gray-50 focus:shadow focus:shadow-green-500
+          className={`rounded-lg border border-gray-400 disabled:border-gray-100 w-full block outline-none py-2 px-2 transition-all text-xs lg:text-sm xl:text-base bg-gray-50 focus:shadow focus:border-primary-base focus:outline-none focus:ring-2 focus:ring-primary-lightest
               ${error && "border-red-500 border animate-shake"} ${
             children && "pl-10"
           }`}

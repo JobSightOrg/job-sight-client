@@ -14,6 +14,10 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
+        primary: {
+          lightest: "#f8668b",
+          base: "#f4003e",
+        },
         customLogoColor: {
           900: "#920025",
           800: "#ab002b",

@@ -6,12 +6,23 @@ interface IDropdownProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   arrayList: Array<any>;
   placeholder: string;
+  selectedItem: string;
+  setSelectedItem: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Dropdown = React.forwardRef<HTMLDivElement, IDropdownProps>(
-  ({ children, arrayList, placeholder, ...props }, ref) => {
+  (
+    {
+      children,
+      arrayList,
+      placeholder,
+      selectedItem,
+      setSelectedItem,
+      ...props
+    },
+    ref
+  ) => {
     const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
-    const [selectedItem, setSelectedItem] = useState<string>(placeholder);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handleClickOutsideDropdown = (e: MouseEvent): void => {
@@ -30,7 +41,6 @@ const Dropdown = React.forwardRef<HTMLDivElement, IDropdownProps>(
         return () =>
           document.removeEventListener("click", handleClickOutsideDropdown);
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [toggleDropdown]);
 
     return (
@@ -38,15 +48,17 @@ const Dropdown = React.forwardRef<HTMLDivElement, IDropdownProps>(
         <button
           {...props}
           type="button"
-          className="inline-flex w-full gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          className="inline-flex w-full gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:ring-2 focus:ring-primary-base"
           aria-expanded="true"
           aria-haspopup="true"
-          onClick={() => {
-            setToggleDropdown(!toggleDropdown);
-          }}
+          onClick={() => setToggleDropdown(!toggleDropdown)}
         >
-          <p className="w-full text-left text-gray-400 font-medium">
-            {selectedItem}
+          <p
+            className={`w-full text-left ${
+              selectedItem ? "text-black" : "text-gray-400"
+            } font-medium`}
+          >
+            {selectedItem || placeholder}
           </p>
           <span className="self-stretch w-[1px] bg-gray-400 box-border"></span>
           <svg
