@@ -15,10 +15,8 @@ enum Company {
 }
 
 export default function AddModal(): JSX.Element {
-  const [toggleAllDropdown, setAllToggleDropdown] = useState<boolean>(false);
   const [toggleDropdown, setToggleDropdown] = useState<boolean>(false);
   const [formError, setFormError] = useState<string>("");
-  const modalRef = useRef(null);
 
   const {
     loadJobListings,
@@ -60,27 +58,8 @@ export default function AddModal(): JSX.Element {
   };
 
   useEffect(() => {
-    console.log(modalRef);
-    let counter = 0;
-    function handleClickOutside(e: Event) {
-      counter++;
-      console.log(counter);
-      if (modalRef.current) {
-        setAllToggleDropdown(false);
-      } else {
-        document.removeEventListener("click", handleClickOutside);
-      }
-    }
-
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  });
-
-  useEffect(() => {
     if (!showAddModal) resetState();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showAddModal]);
 
@@ -88,7 +67,6 @@ export default function AddModal(): JSX.Element {
     <Modal
       isVisible={showAddModal}
       title={`${editModal ? "Edit" : "Add"} Job Listing`}
-      modalRef={modalRef}
       onClose={onClose}
     >
       <div className="flex-col items-stretch p-4">
@@ -117,7 +95,6 @@ export default function AddModal(): JSX.Element {
                 Company
               </label>
               <Dropdown
-                toggleCurrentDropDown={toggleAllDropdown}
                 arrayList={Object.keys(Company) as Array<keyof typeof Company>}
                 placeholder="Company"
               />
@@ -200,7 +177,6 @@ export default function AddModal(): JSX.Element {
                 Application Status
               </label>
               <Dropdown
-                toggleCurrentDropDown={toggleAllDropdown}
                 arrayList={["Applied", "Screen", "Interview", "Offer"]}
                 placeholder="Status"
               />
@@ -225,7 +201,6 @@ export default function AddModal(): JSX.Element {
                 Job Type
               </label>
               <Dropdown
-                toggleCurrentDropDown={toggleAllDropdown}
                 arrayList={["Internship", "Full-Time", "Part-Time"]}
                 placeholder="Type"
               />

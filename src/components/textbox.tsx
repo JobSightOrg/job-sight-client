@@ -1,12 +1,12 @@
 import React from "react";
 
-interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface ITextBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText?: string;
   error?: string | null;
   children?: React.ReactNode;
 }
 
-const TextBox = React.forwardRef<HTMLInputElement, IProps>(
+const TextBox = React.forwardRef<HTMLInputElement, ITextBoxProps>(
   (
     { className, children, labelText, type = "text", error, ...props },
     ref
