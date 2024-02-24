@@ -9,7 +9,11 @@ export default function JobPost(): JSX.Element {
   const {
     jobListings,
     loadJobListings,
-    setSelectedCompany,
+    setCompany,
+    setApplicationStatus,
+    setJobType,
+    setPositionTitle,
+    setLocation,
     setUrlInput,
     setShowAddModal,
     setEditModal,
@@ -39,8 +43,8 @@ export default function JobPost(): JSX.Element {
           key={jobListing.id}
           className="block px-4 py-2 mb-4 rounded-md bg-white hover:shadow shadow-md"
         >
-          <div className="flex w-full flex-1 flex-col items-center md:w-auto md:flex-row">
-            <div className="flex w-full shrink-0 items-center justify-center md:mb-0 md:w-auto">
+          <div className="flex w-full flex-1 items-center md:flex-grow">
+            <div className="w-1/4 flex shrink-0 items-center justify-center">
               {svgFiles[jobListing.companyName] ? (
                 <div className="rounded-md shrink-0">
                   {svgFiles[jobListing.companyName]({
@@ -58,7 +62,7 @@ export default function JobPost(): JSX.Element {
                 />
               )}
               <div className="ml-4 w-full truncate md:min-w-3xs md:max-w-3xs lg:min-w-xs lg:max-w-xs xl:min-w-lg xl:max-w-lg">
-                <p className="text-xl font-bold">Full Stack Developer</p>
+                <p className="text-xl font-bold">{jobListing.positionTitle}</p>
                 <div className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -96,11 +100,11 @@ export default function JobPost(): JSX.Element {
                     <circle cx="12" cy="11" r="3"></circle>
                     <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
                   </svg>
-                  <p className="text-base ml-1">Long Beach, CA</p>
+                  <p className="text-base ml-1">{jobListing.location}</p>
                 </div>
               </div>
             </div>
-            <div className="w-full flex justify-end items-center">
+            <div className="w-3/4 flex justify-end items-center">
               <div className="w-full flex-1 items-center md:mr-0 lg:ml-8">
                 <div className="flex grow">
                   {status.map((currStatus, idx) => (
@@ -169,7 +173,11 @@ export default function JobPost(): JSX.Element {
                 onClick={() => {
                   setEditModal(true);
                   setUrlInput(jobListing.url);
-                  setSelectedCompany(jobListing.companyName);
+                  setCompany(jobListing.companyName);
+                  setApplicationStatus(jobListing.applicationStatus);
+                  setJobType(jobListing.jobType);
+                  setLocation(jobListing.location);
+                  setPositionTitle(jobListing.positionTitle);
                   setShowAddModal(true);
                 }}
               >

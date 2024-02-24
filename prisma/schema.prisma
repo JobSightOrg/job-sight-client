@@ -10,11 +10,16 @@ datasource db {
 }
 
 model job_listing {
-  id          Int      @id @default(autoincrement())
-  url         String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  companyName String   @db.VarChar(255)
+  id                Int      @id @default(autoincrement())
+  url               String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  companyName       String   @db.VarChar(255)
+  applicationStatus String   @db.VarChar(20)
+  email             String
+  jobType           String   @db.VarChar(20)
+  location          String?
+  positionTitle     String?
 
   @@schema("public")
 }

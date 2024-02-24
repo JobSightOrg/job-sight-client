@@ -8,12 +8,16 @@ type GlobalState = {
   loadJobListings: () => Promise<void>;
   showAddModal: boolean;
   setShowAddModal: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedCompany: string;
-  setSelectedCompany: React.Dispatch<React.SetStateAction<string>>;
-  selectedApplicationStatus: string;
-  setSelectedApplicationStatus: React.Dispatch<React.SetStateAction<string>>;
-  selectedJobType: string;
-  setSelectedJobType: React.Dispatch<React.SetStateAction<string>>;
+  company: string;
+  setCompany: React.Dispatch<React.SetStateAction<string>>;
+  applicationStatus: string;
+  setApplicationStatus: React.Dispatch<React.SetStateAction<string>>;
+  jobType: string;
+  setJobType: React.Dispatch<React.SetStateAction<string>>;
+  positionTitle: string;
+  setPositionTitle: React.Dispatch<React.SetStateAction<string>>;
+  location: string;
+  setLocation: React.Dispatch<React.SetStateAction<string>>;
   urlInput: string;
   setUrlInput: React.Dispatch<React.SetStateAction<string>>;
   editModal: boolean;
@@ -24,6 +28,10 @@ export type JobListings = {
   id: number;
   url: string;
   companyName: string;
+  applicationStatus: string;
+  jobType: string;
+  positionTitle: string;
+  location: string;
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -34,12 +42,16 @@ export const GlobalStateContext = createContext<GlobalState>({
   loadJobListings: () => Promise.resolve(),
   showAddModal: false,
   setShowAddModal: () => {},
-  selectedCompany: "",
-  setSelectedCompany: () => {},
-  selectedApplicationStatus: "",
-  setSelectedApplicationStatus: () => {},
-  selectedJobType: "",
-  setSelectedJobType: () => {},
+  company: "",
+  setCompany: () => {},
+  applicationStatus: "",
+  setApplicationStatus: () => {},
+  jobType: "",
+  setJobType: () => {},
+  positionTitle: "",
+  setPositionTitle: () => {},
+  location: "",
+  setLocation: () => {},
   urlInput: "",
   setUrlInput: () => {},
   editModal: false,
@@ -53,10 +65,11 @@ export default function GlobalStateProvider({
 }) {
   const [jobListings, setJobListings] = useState<JobListings[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [selectedCompany, setSelectedCompany] = useState<string>("");
-  const [selectedApplicationStatus, setSelectedApplicationStatus] =
-    useState<string>("");
-  const [selectedJobType, setSelectedJobType] = useState<string>("");
+  const [company, setCompany] = useState<string>("");
+  const [applicationStatus, setApplicationStatus] = useState<string>("");
+  const [jobType, setJobType] = useState<string>("");
+  const [positionTitle, setPositionTitle] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
   const [urlInput, setUrlInput] = useState<string>("");
   const [editModal, setEditModal] = useState<boolean>(false);
 
@@ -74,12 +87,16 @@ export default function GlobalStateProvider({
     loadJobListings,
     showAddModal,
     setShowAddModal,
-    selectedCompany,
-    setSelectedCompany,
-    selectedApplicationStatus,
-    setSelectedApplicationStatus,
-    selectedJobType,
-    setSelectedJobType,
+    company,
+    setCompany,
+    applicationStatus,
+    setApplicationStatus,
+    jobType,
+    setJobType,
+    positionTitle,
+    setPositionTitle,
+    location,
+    setLocation,
     urlInput,
     setUrlInput,
     editModal,

@@ -13,10 +13,7 @@ const TextBox = React.forwardRef<HTMLInputElement, ITextBoxProps>(
   ): JSX.Element => (
     <div className={className + " relative"}>
       {labelText && (
-        <label
-          className="block text-gray-600 font-bold mb-2 text-xs lg:text-sm xl:text-base"
-          htmlFor="txt"
-        >
+        <label className="block text-sm font-medium leading-5 text-gray-700 mb-1">
           {labelText}
         </label>
       )}
@@ -27,9 +24,9 @@ const TextBox = React.forwardRef<HTMLInputElement, ITextBoxProps>(
               ${error && "border-red-500 border animate-shake"} ${
             children && "pl-10"
           }`}
-          {...props}
           ref={ref}
           type={type}
+          {...props}
         />
         {children}
       </div>

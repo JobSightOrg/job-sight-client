@@ -76,7 +76,7 @@ const Dropdown = React.forwardRef<HTMLDivElement, IDropdownProps>(
         </button>
         {toggleDropdown && (
           <div
-            className="w-full absolute z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+            className="w-full max-h-64 absolute z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="menu-button"

@@ -4,8 +4,13 @@ import CustomError from "@/lib/custom-error";
 
 interface RequestBody {
   id: number;
+  email: string;
   url: string;
   companyName: string;
+  applicationStatus: string;
+  jobType: string;
+  location?: string | undefined;
+  positionTitle?: string | undefined;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,13 +20,15 @@ const isValidBody = (body: any, requestType: string): body is RequestBody => {
     case "post":
       return (
         (body as RequestBody).url !== undefined &&
-        (body as RequestBody).companyName !== undefined
+        (body as RequestBody).email !== undefined &&
+        (body as RequestBody).companyName !== undefined &&
+        (body as RequestBody).applicationStatus !== undefined &&
+        (body as RequestBody).jobType !== undefined
       );
     case "patch":
       return (
         (body as RequestBody).id !== undefined &&
-        (body as RequestBody).url !== undefined &&
-        (body as RequestBody).companyName !== undefined
+        (body as RequestBody).url !== undefined
       );
     case "delete":
       return (body as RequestBody).id !== undefined;
@@ -52,7 +59,9 @@ export async function POST(req: NextRequest) {
     console.error("Failed POST /api/listing\n", err);
 
     if (err instanceof CustomError)
-      return NextResponse.json({ status: err.statusCode || 500 });
+      return NextResponse.json({ status: err.statusCode });
+
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
 
@@ -73,7 +82,9 @@ export async function PATCH(req: NextRequest) {
     console.error("Failed PATCH /api/listing\n", err);
 
     if (err instanceof CustomError)
-      return NextResponse.json({ status: err.statusCode || 500 });
+      return NextResponse.json({ status: err.statusCode });
+
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
 
@@ -91,5 +102,7 @@ export async function DELETE(req: NextRequest) {
 
     if (err instanceof CustomError)
       return NextResponse.json({ status: err.statusCode || 500 });
+
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
