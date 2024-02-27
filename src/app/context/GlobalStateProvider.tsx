@@ -5,7 +5,7 @@ import { createContext, useEffect, useState } from "react";
 type GlobalState = {
   jobListings: JobListings[];
   setJobListings: React.Dispatch<React.SetStateAction<JobListings[]>>;
-  loadJobListings: () => Promise<void>;
+  loadJobListings: () => void;
   showAddModal: boolean;
   setShowAddModal: React.Dispatch<React.SetStateAction<boolean>>;
   company: string;
@@ -39,7 +39,7 @@ export type JobListings = {
 export const GlobalStateContext = createContext<GlobalState>({
   jobListings: [],
   setJobListings: () => {},
-  loadJobListings: () => Promise.resolve(),
+  loadJobListings: () => {},
   showAddModal: false,
   setShowAddModal: () => {},
   company: "",
@@ -73,13 +73,16 @@ export default function GlobalStateProvider({
   const [urlInput, setUrlInput] = useState<string>("");
   const [editModal, setEditModal] = useState<boolean>(false);
 
-  const loadJobListings = (): Promise<void> =>
+  const loadJobListings = (): void => {
+    // const data = { email };
+
     fetch("/api/listing", {
       method: "GET",
     })
       .then((res) => res.json())
       .then((data) => setJobListings(data))
       .catch((err) => console.error(err));
+  };
 
   const contextValue: GlobalState = {
     jobListings,

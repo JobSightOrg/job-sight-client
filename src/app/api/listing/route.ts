@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db/prisma";
 import CustomError from "@/lib/custom-error";
+import { builtinModules } from "module";
 
 interface RequestBody {
   id: number;
@@ -9,8 +10,8 @@ interface RequestBody {
   companyName: string;
   applicationStatus: string;
   jobType: string;
-  location?: string | undefined;
-  positionTitle?: string | undefined;
+  location: string;
+  positionTitle: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -37,9 +38,17 @@ const isValidBody = (body: any, requestType: string): body is RequestBody => {
   }
 };
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const jobListings = await prisma.job_listing?.findMany();
+    const body: RequestBody = await req.json();
+
+    const jobListings = await prisma.job_listing?.findMany({
+      where: {
+        email: {
+          equals: body.email,
+        },
+      },
+    });
     return NextResponse.json(jobListings ?? []);
   } catch (err) {
     console.error("Failed GET /api/listing\n", err);
@@ -49,7 +58,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    const body: RequestBody = await req.json();
 
     if (!isValidBody(body, "post")) throw new CustomError("Invalid Body", 400);
 
@@ -67,7 +76,7 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const body = await req.json();
+    const body: RequestBody = await req.json();
 
     if (!isValidBody(body, "patch")) throw new CustomError("Invalid Body", 400);
 

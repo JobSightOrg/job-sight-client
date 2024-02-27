@@ -20,15 +20,13 @@ export default function JobPost(): JSX.Element {
   } = useContext(GlobalStateContext);
 
   const deleteJobListing = (id: number): void => {
-    const data = { id };
-
     fetch("/api/listing", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       method: "DELETE",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ id }),
     })
       .then(async () => {
         await loadJobListings();
@@ -41,7 +39,7 @@ export default function JobPost(): JSX.Element {
       {jobListings.map((jobListing) => (
         <div
           key={jobListing.id}
-          className="block px-4 py-2 mb-4 rounded-md bg-white hover:shadow shadow-md"
+          className="block p-4 mb-4 rounded-md bg-white hover:shadow shadow-md"
         >
           <div className="flex w-full flex-1 items-center md:flex-grow">
             <div className="w-1/4 flex shrink-0 items-center justify-center">
