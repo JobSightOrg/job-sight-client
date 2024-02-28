@@ -3,7 +3,11 @@ const path = require("path");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["source.unsplash.com", "lh3.googleusercontent.com"],
+    domains: [
+      "source.unsplash.com",
+      "lh3.googleusercontent.com",
+      "avatars.githubusercontent.com",
+    ],
   },
   webpack: (config, { isServer }) => {
     config.resolve.alias["@"] = path.resolve(__dirname);

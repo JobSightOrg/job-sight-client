@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db/prisma";
 import CustomError from "@/lib/custom-error";
-import { builtinModules } from "module";
 
 interface RequestBody {
   id: number;
@@ -38,23 +37,15 @@ const isValidBody = (body: any, requestType: string): body is RequestBody => {
   }
 };
 
-export async function GET(req: NextRequest) {
-  try {
-    const body: RequestBody = await req.json();
-
-    const jobListings = await prisma.job_listing?.findMany({
-      where: {
-        email: {
-          equals: body.email,
-        },
-      },
-    });
-    return NextResponse.json(jobListings ?? []);
-  } catch (err) {
-    console.error("Failed GET /api/listing\n", err);
-    return NextResponse.json([]);
-  }
-}
+// export async function GET() {
+//   try {
+//     const jobListings = await prisma.job_listing?.findMany();
+//     return NextResponse.json(jobListings);
+//   } catch (err) {
+//     console.error("Failed GET /api/listing\n", err);
+//     return NextResponse.json([]);
+//   }
+// }
 
 export async function POST(req: NextRequest) {
   try {

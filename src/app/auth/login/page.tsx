@@ -56,7 +56,7 @@ export default function Login() {
           if (errMessage) throw new Error(errMessage);
           throw new Error(`Error status: ${res.status}`);
         }
-        return res.json();
+        return await res.json();
       })
       .then((data) => console.log(data))
       .catch((err: Error) => {
@@ -237,8 +237,6 @@ export default function Login() {
                         password,
                         redirect: false,
                       });
-
-                      console.log("here", res);
 
                       if (res)
                         res.ok ? router.push("/") : setApiErrorMsg(res.error);

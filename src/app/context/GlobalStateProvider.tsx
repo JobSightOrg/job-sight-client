@@ -1,11 +1,12 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { createContext, useEffect, useState } from "react";
 
 type GlobalState = {
   jobListings: JobListings[];
   setJobListings: React.Dispatch<React.SetStateAction<JobListings[]>>;
-  loadJobListings: () => void;
+  loadJobListings: () => Promise<void>;
   showAddModal: boolean;
   setShowAddModal: React.Dispatch<React.SetStateAction<boolean>>;
   company: string;
@@ -39,7 +40,7 @@ export type JobListings = {
 export const GlobalStateContext = createContext<GlobalState>({
   jobListings: [],
   setJobListings: () => {},
-  loadJobListings: () => {},
+  loadJobListings: () => Promise.resolve(),
   showAddModal: false,
   setShowAddModal: () => {},
   company: "",
@@ -72,22 +73,25 @@ export default function GlobalStateProvider({
   const [location, setLocation] = useState<string>("");
   const [urlInput, setUrlInput] = useState<string>("");
   const [editModal, setEditModal] = useState<boolean>(false);
+  const { data: session } = useSession();
 
-  const loadJobListings = (): void => {
-    // const data = { email };
-
-    fetch("/api/listing", {
-      method: "GET",
+  const loadJobListings = (): Promise<void> =>
+    fetch("/api/applications", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({ email: session?.user?.email }),
     })
       .then((res) => res.json())
       .then((data) => setJobListings(data))
       .catch((err) => console.error(err));
-  };
 
   const contextValue: GlobalState = {
+    loadJobListings,
     jobListings,
     setJobListings,
-    loadJobListings,
     showAddModal,
     setShowAddModal,
     company,
@@ -107,8 +111,9 @@ export default function GlobalStateProvider({
   };
 
   useEffect((): void => {
-    loadJobListings();
-  }, []);
+    if (session) loadJobListings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session]);
 
   return (
     <GlobalStateContext.Provider value={contextValue}>
