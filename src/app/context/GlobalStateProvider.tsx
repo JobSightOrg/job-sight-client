@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 type GlobalState = {
   jobListings: JobListings[];
@@ -109,11 +109,6 @@ export default function GlobalStateProvider({
     editModal,
     setEditModal,
   };
-
-  useEffect((): void => {
-    if (session) loadJobListings();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
 
   return (
     <GlobalStateContext.Provider value={contextValue}>

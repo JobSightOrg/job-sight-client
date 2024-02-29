@@ -10,7 +10,6 @@ export async function POST(req: NextRequest) {
         email: body.email ?? null,
       },
     });
-    console.log("here", body.email);
 
     return NextResponse.json(jobListings);
   } catch (err) {

@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { svgFiles } from "@/lib/svg-loader";
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import { GlobalStateContext } from "../context/GlobalStateProvider";
+import { useSession } from "next-auth/react";
 
 export default function JobPost(): JSX.Element {
   const status: string[] = ["Applied", "Screen", "Interview", "Offer"];
@@ -19,6 +20,8 @@ export default function JobPost(): JSX.Element {
     setEditModal,
   } = useContext(GlobalStateContext);
 
+  const { data: session } = useSession();
+
   const deleteJobListing = (id: number): void => {
     fetch("/api/listing", {
       headers: {
@@ -33,6 +36,11 @@ export default function JobPost(): JSX.Element {
       })
       .catch((err) => console.error(err));
   };
+
+  useEffect((): void => {
+    if (session) loadJobListings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="mt-5 justify-center items-center">

@@ -12,6 +12,7 @@ import PasswordIcon from "~/public/assets/icons/password.svg";
 import ErrorIcon from "~/public/assets/icons/error.svg";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/loading";
+import Home from "@/app/page";
 
 interface ErrorMsgObj {
   name?: string;
