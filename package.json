@@ -12,6 +12,7 @@
     "@auth/supabase-adapter": "^0.1.10",
     "@prisma/client": "^5.5.2",
     "@supabase/supabase-js": "^2.39.7",
+    "amqplib": "^0.10.3",
     "bcrypt": "^5.1.1",
     "bufferutil": "^4.0.8",
     "next": "^14.0.4",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
+    "@types/amqplib": "^0.10.5",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
