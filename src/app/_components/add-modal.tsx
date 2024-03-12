@@ -62,7 +62,7 @@ export default function AddModal(): JSX.Element {
       url: urlInput,
     };
 
-    fetch("/api/listing", {
+    fetch("/api/listings", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

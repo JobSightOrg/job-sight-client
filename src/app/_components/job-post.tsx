@@ -23,7 +23,7 @@ export default function JobPost(): JSX.Element {
   const { data: session } = useSession();
 
   const deleteJobListing = (id: number): void => {
-    fetch("/api/listing", {
+    fetch("/api/listings", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

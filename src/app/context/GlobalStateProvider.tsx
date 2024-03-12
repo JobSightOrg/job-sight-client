@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { createContext, useState } from "react";
 
 type GlobalState = {
@@ -73,16 +72,13 @@ export default function GlobalStateProvider({
   const [location, setLocation] = useState<string>("");
   const [urlInput, setUrlInput] = useState<string>("");
   const [editModal, setEditModal] = useState<boolean>(false);
-  const { data: session } = useSession();
 
   const loadJobListings = (): Promise<void> =>
-    fetch("/api/applications", {
+    fetch("/api/listings", {
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
       },
-      method: "POST",
-      body: JSON.stringify({ email: session?.user?.email }),
+      method: "GET",
     })
       .then((res) => res.json())
       .then((data) => setJobListings(data))
