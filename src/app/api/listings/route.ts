@@ -40,11 +40,18 @@ const isValidBody = (body: any, requestType: string): body is RequestBody => {
   }
 };
 
+const invalidateCache = async () => {
+  const redisClient = await redis;
+  const session = await getServerSession();
+
+  await redisClient.del(session?.user?.email as string);
+};
+
 export async function GET() {
   try {
     const session = await getServerSession();
-    const userEmail = session?.user?.email;
     const redisClient = await redis;
+    const userEmail = session?.user?.email;
     const cachedJobListings = userEmail && (await redisClient.get(userEmail));
 
     let jobListings: JobListings[];
@@ -74,8 +81,9 @@ export async function POST(req: NextRequest) {
 
     if (!isValidBody(body, "post")) throw new CustomError("Invalid Body", 400);
 
-    const result = await prisma.job_listing?.create({ data: body });
-    console.log(result);
+    await prisma.job_listing?.create({ data: body });
+    await invalidateCache();
+
     return NextResponse.json({ status: 200 });
   } catch (err) {
     console.error("Failed POST /api/listings\n", err);
@@ -90,6 +98,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const body: RequestBody = await req.json();
+    const redisClient = await redis;
 
     if (!isValidBody(body, "patch")) throw new CustomError("Invalid Body", 400);
 
@@ -99,6 +108,8 @@ export async function PATCH(req: NextRequest) {
       where: { id },
       data: { companyName, url },
     });
+    await invalidateCache();
+
     return NextResponse.json({ status: 200 });
   } catch (err) {
     console.error("Failed PATCH /api/listings\n", err);
@@ -118,6 +129,8 @@ export async function DELETE(req: NextRequest) {
       throw new CustomError("Invalid Body", 400);
 
     await prisma.job_listing?.delete({ where: body });
+    await invalidateCache();
+
     return NextResponse.json({ status: 200 });
   } catch (err) {
     console.error("Failed DELETE /api/listings\n", err);
