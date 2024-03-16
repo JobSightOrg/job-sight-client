@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db/prisma";
 import CustomError from "@/lib/custom-error";
-import { JobListings } from "@/app/context/GlobalStateProvider";
 import { getServerSession } from "next-auth";
 import redis from "@/db/redis";
+import { JobListings } from "@/app/_types/custom";
 
 interface RequestBody {
   id: number;
@@ -15,7 +15,11 @@ interface RequestBody {
   location: string;
   positionTitle: string;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | null;
+  applied: Date | null;
+  interview: Date | null;
+  offer: Date | null;
+  screen: Date | null;
 }
 
 const isValidBody = (body: any, requestType: string): body is RequestBody => {
@@ -98,7 +102,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const body: RequestBody = await req.json();
-    const redisClient = await redis;
+    console.log(body);
 
     if (!isValidBody(body, "patch")) throw new CustomError("Invalid Body", 400);
 

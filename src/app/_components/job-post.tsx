@@ -10,12 +10,7 @@ export default function JobPost(): JSX.Element {
   const {
     jobListings,
     loadJobListings,
-    setCompany,
-    setApplicationStatus,
-    setJobType,
-    setPositionTitle,
-    setLocation,
-    setUrlInput,
+    setModalFormData,
     setShowAddModal,
     setEditModal,
   } = useContext(GlobalStateContext);
@@ -178,12 +173,15 @@ export default function JobPost(): JSX.Element {
                 className="w-8 h-8 mr-1 hover:text-yellow-500 cursor-pointer"
                 onClick={() => {
                   setEditModal(true);
-                  setUrlInput(jobListing.url);
-                  setCompany(jobListing.companyName);
-                  setApplicationStatus(jobListing.applicationStatus);
-                  setJobType(jobListing.jobType);
-                  setLocation(jobListing.location);
-                  setPositionTitle(jobListing.positionTitle);
+                  setModalFormData({
+                    id: jobListing.id,
+                    url: jobListing.url,
+                    jobType: jobListing.jobType,
+                    companyName: jobListing.companyName,
+                    location: jobListing.location,
+                    applicationStatus: jobListing.applicationStatus,
+                    positionTitle: jobListing.positionTitle,
+                  });
                   setShowAddModal(true);
                 }}
               >

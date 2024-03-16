@@ -1,23 +1,25 @@
 import { GlobalStateContext } from "@/app/context/GlobalStateProvider";
 import React, { useRef } from "react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IDropdownProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  name: string;
   children?: React.ReactNode;
   arrayList: Array<any>;
-  placeholder: string;
+  placeholder?: string;
   selectedItem: string;
-  setSelectedItem: React.Dispatch<React.SetStateAction<string>>;
+  handleEvent: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Dropdown = React.forwardRef<HTMLDivElement, IDropdownProps>(
   (
     {
+      name,
       children,
       arrayList,
       placeholder,
       selectedItem,
-      setSelectedItem,
+      handleEvent,
       ...props
     },
     ref
@@ -93,8 +95,10 @@ const Dropdown = React.forwardRef<HTMLDivElement, IDropdownProps>(
                     role="menuitem"
                     tabIndex={-1}
                     key={idx}
-                    onClick={() => {
-                      setSelectedItem(item);
+                    name={name}
+                    value={item}
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                      handleEvent(e);
                       setToggleDropdown(false);
                     }}
                   >

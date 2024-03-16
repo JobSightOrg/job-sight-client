@@ -13,17 +13,17 @@ model job_listing {
   id                Int       @id @default(autoincrement())
   url               String
   createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  updatedAt         DateTime?
   companyName       String    @db.VarChar(255)
   applicationStatus String    @db.VarChar(20)
   email             String
   jobType           String    @db.VarChar(20)
   location          String
   positionTitle     String
-  applied           DateTime? @updatedAt
-  interview         DateTime? @updatedAt
-  offer             DateTime? @updatedAt
-  screen            DateTime? @updatedAt
+  applied           DateTime?
+  interview         DateTime?
+  offer             DateTime?
+  screen            DateTime?
 
   @@index([email], map: "email_idx")
   @@schema("public")

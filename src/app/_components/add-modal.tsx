@@ -17,36 +17,51 @@ enum Company {
 
 export default function AddModal(): JSX.Element {
   const [formError, setFormError] = useState<string>("");
+  // const [formModified, setFormModified] = useState(false);
   const { data: session } = useSession();
 
   const {
     loadJobListings,
-    company,
-    setCompany,
-    applicationStatus,
-    setApplicationStatus,
-    jobType,
-    setJobType,
-    location,
-    setLocation,
-    positionTitle,
-    setPositionTitle,
-    urlInput,
-    setUrlInput,
     showAddModal,
     setShowAddModal,
     editModal,
     setEditModal,
+    modalFormData,
+    setModalFormData,
   } = useContext(GlobalStateContext);
 
+  const handleFormChange = (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.MouseEvent<HTMLButtonElement>
+  ) => {
+    const { name, value } = event.target as
+      | HTMLInputElement
+      | HTMLButtonElement;
+
+    setModalFormData((prevState) => {
+      return {
+        ...prevState,
+        [name]: value,
+      };
+    });
+  };
+
   const resetState = (): void => {
-    setCompany("");
-    setApplicationStatus("");
-    setJobType("");
-    setPositionTitle("");
-    setLocation("");
-    setUrlInput("");
     setEditModal(false);
+    setModalFormData({
+      id: undefined,
+      url: "",
+      companyName: "",
+      applicationStatus: "",
+      jobType: "",
+      positionTitle: "",
+      location: "",
+      applied: null,
+      interview: null,
+      offer: null,
+      screen: null,
+    });
   };
 
   const onClose = (): void => setShowAddModal(false);
@@ -54,12 +69,12 @@ export default function AddModal(): JSX.Element {
   const postJobListing = (): void => {
     const data = {
       email: session?.user?.email,
-      companyName: company,
-      positionTitle: positionTitle,
-      location: location,
-      applicationStatus: applicationStatus,
-      jobType: jobType,
-      url: urlInput,
+      companyName: modalFormData.companyName,
+      positionTitle: modalFormData.positionTitle,
+      location: modalFormData.location,
+      applicationStatus: modalFormData.applicationStatus,
+      jobType: modalFormData.jobType,
+      url: modalFormData.url,
     };
 
     fetch("/api/listings", {
@@ -67,7 +82,7 @@ export default function AddModal(): JSX.Element {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      method: "POST",
+      method: editModal ? "PATCH" : "POST",
       body: JSON.stringify(data),
     })
       .then(async () => {
@@ -91,9 +106,9 @@ export default function AddModal(): JSX.Element {
     >
       <div className="flex-col items-stretch p-4">
         <div className="flex mb-4">
-          {svgFiles[company] ? (
+          {svgFiles[modalFormData.companyName] ? (
             <div className="mr-4">
-              {svgFiles[company]({
+              {svgFiles[modalFormData.companyName]({
                 width: 120,
                 height: 120,
               })}
@@ -115,10 +130,11 @@ export default function AddModal(): JSX.Element {
                 Company
               </label>
               <Dropdown
+                name={"companyName"}
                 arrayList={Object.keys(Company) as Array<keyof typeof Company>}
                 placeholder="Company"
-                selectedItem={company}
-                setSelectedItem={setCompany}
+                selectedItem={modalFormData.companyName}
+                handleEvent={handleFormChange}
               />
             </div>
           </div>
@@ -134,12 +150,10 @@ export default function AddModal(): JSX.Element {
                 placeholder="Title"
                 step="1"
                 type="text"
-                name="title"
+                name="positionTitle"
                 className="form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition focus:border-primary-base focus:outline-none focus:ring-2 focus:ring-primary-lightest disabled:bg-gray-50 disabled:opacity-90 sm:text-sm sm:leading-5"
-                value={positionTitle}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-                  setPositionTitle((e.target as HTMLInputElement)?.value)
-                }
+                value={modalFormData.positionTitle}
+                onChange={handleFormChange}
               />
             </div>
             <div className="block mb-4">
@@ -147,10 +161,11 @@ export default function AddModal(): JSX.Element {
                 Application Status
               </label>
               <Dropdown
+                name={"applicationStatus"}
                 arrayList={["Applied", "Screen", "Interview", "Offer"]}
                 placeholder="Status"
-                selectedItem={applicationStatus}
-                setSelectedItem={setApplicationStatus}
+                selectedItem={modalFormData.applicationStatus}
+                handleEvent={handleFormChange}
               />
             </div>
           </div>
@@ -166,10 +181,8 @@ export default function AddModal(): JSX.Element {
                 type="text"
                 name="location"
                 className="form-input mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm transition focus:border-primary-base focus:outline-none focus:ring-2 focus:ring-primary-lightest disabled:bg-gray-50 disabled:opacity-90 sm:text-sm sm:leading-5"
-                value={location}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-                  setLocation((e.target as HTMLInputElement)?.value)
-                }
+                value={modalFormData.location}
+                onChange={handleFormChange}
               />
             </div>
             <div className="block mb-4">
@@ -177,10 +190,11 @@ export default function AddModal(): JSX.Element {
                 Job Type
               </label>
               <Dropdown
+                name={"jobType"}
                 arrayList={["Internship", "Full-Time", "Part-Time"]}
                 placeholder="Type"
-                selectedItem={jobType}
-                setSelectedItem={setJobType}
+                selectedItem={modalFormData.jobType}
+                handleEvent={handleFormChange}
               />
             </div>
           </div>
@@ -205,19 +219,18 @@ export default function AddModal(): JSX.Element {
             </svg>
           </div>
           <input
-            id="link"
             className="pr-24 text-gray-600 bg-gray-100 focus:outline-none focus:border focus:border-primary-base font-normal w-full h-10 flex items-center pl-12 text-sm border-gray-300 rounded border"
-            placeholder="https://google.com"
-            value={urlInput}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-              setUrlInput((e.target as HTMLInputElement)?.value)
-            }
+            placeholder="https://"
+            name="url"
+            value={modalFormData.url}
+            onChange={handleFormChange}
             required
           />
           <button
             className="focus:ring-2 focus:ring-offset-2 rounded-md focus:ring-customLogoColor-600 absolute right-0 top-0 transition duration-150 ease-in-out hover:bg-customLogoColor-800 focus:outline-none bg-customLogoColor-500 rounded-r text-white px-5 h-10 text-sm"
             onClick={() => {
-              if (validateSite(urlInput, company)) postJobListing();
+              if (validateSite(modalFormData.url, modalFormData.companyName))
+                postJobListing();
               else setFormError("");
             }}
           >
