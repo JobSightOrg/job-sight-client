@@ -6,6 +6,7 @@ import { validateSite } from "@/lib/site-validation";
 import { GlobalStateContext } from "../context/GlobalStateProvider";
 import Dropdown from "@/components/dropdown";
 import { useSession } from "next-auth/react";
+import Loading from "@/components/loading";
 
 enum Company {
   Google = "Google",
@@ -17,6 +18,7 @@ enum Company {
 
 export default function AddModal(): JSX.Element {
   const [formError, setFormError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   // const [formModified, setFormModified] = useState(false);
   const { data: session } = useSession();
 
@@ -62,6 +64,7 @@ export default function AddModal(): JSX.Element {
       offer: null,
       screen: null,
     });
+    setIsLoading(false);
   };
 
   const onClose = (): void => setShowAddModal(false);
@@ -236,7 +239,7 @@ export default function AddModal(): JSX.Element {
           </div>
           <input
             className="pr-24 text-gray-600 bg-gray-100 focus:outline-none focus:border focus:border-primary-base font-normal w-full h-10 flex items-center pl-12 text-sm border-gray-300 rounded border"
-            placeholder="https://"
+            placeholder="https://example.com"
             name="url"
             value={modalFormData.url}
             onChange={handleFormChange}
@@ -245,12 +248,12 @@ export default function AddModal(): JSX.Element {
           <button
             className="focus:ring-2 focus:ring-offset-2 rounded-md focus:ring-customLogoColor-600 absolute right-0 top-0 transition duration-150 ease-in-out hover:bg-customLogoColor-800 focus:outline-none bg-customLogoColor-500 rounded-r text-white px-5 h-10 text-sm"
             onClick={() => {
-              if (validateSite(modalFormData.url, modalFormData.companyName))
-                postJobListing();
-              else setFormError("");
+              validateSite(modalFormData.url, modalFormData.companyName)
+                ? (postJobListing(), setIsLoading(true))
+                : setFormError("");
             }}
           >
-            Submit
+            {isLoading ? <Loading /> : "Submit"}
           </button>
         </div>
       </div>
