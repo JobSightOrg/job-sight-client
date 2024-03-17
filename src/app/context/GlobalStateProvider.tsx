@@ -24,6 +24,7 @@ export const GlobalStateContext = createContext<GlobalState>({
   editModal: false,
   setEditModal: () => {},
   modalFormData: {
+    id: undefined,
     url: "",
     companyName: "",
     applicationStatus: "",
@@ -47,6 +48,7 @@ export default function GlobalStateProvider({
   const [showAddModal, setShowAddModal] = useState(false);
   const [editModal, setEditModal] = useState<boolean>(false);
   const [modalFormData, setModalFormData] = useState<ModalFormData>({
+    id: undefined,
     url: "",
     companyName: "",
     applicationStatus: "",

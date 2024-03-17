@@ -32,12 +32,7 @@ const isValidBody = (body: any, requestType: string): body is RequestBody => {
         (body as RequestBody).applicationStatus !== undefined &&
         (body as RequestBody).jobType !== undefined
       );
-    case "patch":
-      return (
-        (body as RequestBody).id !== undefined &&
-        (body as RequestBody).url !== undefined
-      );
-    case "delete":
+    case "patch" || "delete":
       return (body as RequestBody).id !== undefined;
     default:
       return false;
@@ -102,15 +97,14 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const body: RequestBody = await req.json();
-    console.log(body);
 
     if (!isValidBody(body, "patch")) throw new CustomError("Invalid Body", 400);
 
-    const { id, companyName, url } = body;
+    const { id, ...updatedFields } = body;
 
     await prisma.job_listing?.update({
       where: { id },
-      data: { companyName, url },
+      data: updatedFields,
     });
     await invalidateCache();
 

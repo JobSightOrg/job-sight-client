@@ -63,7 +63,9 @@ export default function JobPost(): JSX.Element {
                 />
               )}
               <div className="ml-4 w-full truncate md:min-w-3xs md:max-w-3xs lg:min-w-xs lg:max-w-xs xl:min-w-lg xl:max-w-lg">
-                <p className="text-xl font-bold">{jobListing.positionTitle}</p>
+                <p className="text-xl font-bold truncate">
+                  {jobListing.positionTitle}
+                </p>
                 <div className="flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +85,9 @@ export default function JobPost(): JSX.Element {
                     <line x1="17" y1="11" x2="17" y2="11.01"></line>
                     <line x1="17" y1="15" x2="17" y2="15.01"></line>
                   </svg>
-                  <p className="text-base ml-1">{jobListing.companyName}</p>
+                  <p className="text-base ml-1 truncate">
+                    {jobListing.companyName}
+                  </p>
                 </div>
                 <div className="flex items-center">
                   <svg
@@ -101,7 +105,9 @@ export default function JobPost(): JSX.Element {
                     <circle cx="12" cy="11" r="3"></circle>
                     <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
                   </svg>
-                  <p className="text-base ml-1">{jobListing.location}</p>
+                  <p className="text-base ml-1 truncate">
+                    {jobListing.location}
+                  </p>
                 </div>
               </div>
             </div>

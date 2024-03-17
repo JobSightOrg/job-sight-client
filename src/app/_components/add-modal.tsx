@@ -67,7 +67,7 @@ export default function AddModal(): JSX.Element {
   const onClose = (): void => setShowAddModal(false);
 
   const postJobListing = (): void => {
-    const data = {
+    const defaultFormData = {
       email: session?.user?.email,
       companyName: modalFormData.companyName,
       positionTitle: modalFormData.positionTitle,
@@ -77,13 +77,17 @@ export default function AddModal(): JSX.Element {
       url: modalFormData.url,
     };
 
+    const formData = editModal
+      ? { id: modalFormData.id, ...defaultFormData }
+      : defaultFormData;
+
     fetch("/api/listings", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       method: editModal ? "PATCH" : "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify(formData),
     })
       .then(async () => {
         await loadJobListings();
@@ -105,7 +109,7 @@ export default function AddModal(): JSX.Element {
       onClose={onClose}
     >
       <div className="flex-col items-stretch p-4">
-        <div className="flex mb-4">
+        <div className="flex mb-4 items-center">
           {svgFiles[modalFormData.companyName] ? (
             <div className="mr-4">
               {svgFiles[modalFormData.companyName]({
@@ -137,10 +141,6 @@ export default function AddModal(): JSX.Element {
                 handleEvent={handleFormChange}
               />
             </div>
-          </div>
-        </div>
-        <div className="flex">
-          <div className="w-full flex flex-col mr-2">
             <div className="block mb-4">
               <label className=" block items-center text-sm font-medium leading-5 text-gray-700">
                 Position Title
@@ -156,9 +156,25 @@ export default function AddModal(): JSX.Element {
                 onChange={handleFormChange}
               />
             </div>
+          </div>
+        </div>
+        <div className="flex">
+          <div className="w-full flex flex-col mr-2">
             <div className="block mb-4">
               <label className="block text-sm font-medium leading-5 text-gray-700 mb-1">
                 Application Status
+              </label>
+              <Dropdown
+                name={"applicationStatus"}
+                arrayList={["Applied", "Screen", "Interview", "Offer"]}
+                placeholder="Status"
+                selectedItem={modalFormData.applicationStatus}
+                handleEvent={handleFormChange}
+              />
+            </div>
+            <div className="block mb-4">
+              <label className="block text-sm font-medium leading-5 text-gray-700 mb-1">
+                Application Date
               </label>
               <Dropdown
                 name={"applicationStatus"}
