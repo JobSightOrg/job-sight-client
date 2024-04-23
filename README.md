@@ -1,6 +1,6 @@
 ## ❓ About
 <br/>
-A job tracker dashboard designed to help users monitor internships and apprenticeships.
+<p>A job tracker dashboard designed to help users monitor internships and apprenticeships.</p>
 
 ### Built With
 <p align="left">
