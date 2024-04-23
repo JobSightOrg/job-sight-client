@@ -1,6 +1,5 @@
 ## ❓ About
-<br/>
-<p>A job tracker dashboard designed to help users monitor internships and apprenticeships.</p>
+<br/> A job tracker dashboard designed to help users monitor internships and apprenticeships.
 
 ### Built With
 <p align="left">
@@ -11,4 +10,4 @@
 
 ## ✅ Features
 <br/>
-*User Auth - using google/github/credential auth
+* User Auth - requires either google/github/credential auth
