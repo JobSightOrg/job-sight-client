@@ -10,4 +10,5 @@
 
 ## ✅ Features
 <br/>
+- [x] User Auth - requires either google/github/credential auth
 ![](https://github.com/JobSightOrg/job-sight-client/assets/7155149/402f187e-3a16-4922-8b5a-1e3e11b45ba4)
