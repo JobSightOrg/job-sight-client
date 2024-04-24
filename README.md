@@ -9,6 +9,4 @@
 </p>
 
 ## ✅ Features
-<br/>
-- [x] #739
 - [x] User Auth - requires either google/github/credential auth
